@@ -1,2 +1,3 @@
 # damenu
-# damenu
+
+QR-based digital menu
