@@ -9,13 +9,15 @@ export class Menu extends Document
     name: string;
 
     @Prop()
-    restaurantName: string;
 
     @Prop()
     categories: string[];
 
-    @Prop([{ type: MongooseSchema.Types.ObjectId, ref: Item.name}])
+    @Prop([{ type: MongooseSchema.Types.ObjectId, ref: Item.name }])
     items: Item[];
+
+    @Prop()
+    sortedItems: object
 }
 
 export const MenuSchema: MongooseSchema<any> = SchemaFactory.createForClass(Menu);
