@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Res } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { Item } from './schema/item.schema';
 import { Types } from 'mongoose';
+import * as express from 'express';
 
 @Controller('items')
 export class ItemsController
@@ -12,12 +13,14 @@ export class ItemsController
     async create(): Promise<void>
     {
         const item: object = {
-            name: "ppge",
-            code: "1",
-            img: "123",
-            description: "sdf",
-            category: "sdffsd",
-            menu: Types.ObjectId("")
+            name: 'Fried Rice',
+            code: '',
+            img: 'img3.jpg',
+            price: 9.90,
+            description: 'Uncle Roger approve this',
+            category: 'MAIN DISH',
+            order: 1,
+            menu: Types.ObjectId('5f5500ea26f50147b4e0976c')
         };
         this.itemsService.create(item);
     }
@@ -27,5 +30,11 @@ export class ItemsController
     {
         return this.itemsService.findAll();
     }
+
+    // @Get('img')
+    // async getImg(@Res() response: express.Response): Promise<any>
+    // {
+    //     response.sendFile('img1.jpg', {root: 'public'});
+    // }
 
 }
