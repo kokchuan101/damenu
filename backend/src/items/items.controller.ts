@@ -1,8 +1,7 @@
-import { Controller, Get, Post, Res } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { Item } from './schema/item.schema';
 import { Types } from 'mongoose';
-import * as express from 'express';
 
 @Controller('items')
 export class ItemsController
@@ -12,6 +11,7 @@ export class ItemsController
     @Post()
     async create(): Promise<void>
     {
+        // eslint-disable-next-line @typescript-eslint/ban-types
         const item: object = {
             name: 'Fried Rice',
             code: '',

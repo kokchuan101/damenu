@@ -1,7 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Item } from './items/schema/item.schema';
 import * as express from 'express';
 import { join } from 'path';
 

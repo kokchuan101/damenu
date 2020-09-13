@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Double } from 'mongodb';
-import { Document, Schema as _Schema, Types} from 'mongoose';
+import { Document, Schema as _Schema } from 'mongoose';
 
 @Schema()
 export class Item extends Document
@@ -20,13 +19,12 @@ export class Item extends Document
     @Prop()
     description: string;
 
-    
     // all Caps
     @Prop()
     category: string;
-    
+
     @Prop()
-    order:number;
+    order: number;
 }
 
 export const ItemSchema: _Schema<any> = SchemaFactory.createForClass(Item);
