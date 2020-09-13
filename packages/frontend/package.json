@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint --no-fix",
+    "lint": "lint-staged",
     "lint:fix": "vue-cli-service lint"
   },
   "dependencies": {
@@ -30,12 +30,15 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11",
-    "yorkie": "^2.0.0"
+    "lint-staged": "^10.3.0",
+    "vue-template-compiler": "^2.6.11"
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "lint-staged": {
+    "*.vue|*.js": "vue-cli-service lint --no-fix"
+  }
 }
