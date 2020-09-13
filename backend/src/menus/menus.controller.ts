@@ -1,5 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import { Types } from 'mongoose';
+import { Controller, Get, Post, Param } from '@nestjs/common';
 import { MenusService } from './menus.service';
 import { Menu } from './schema/menu.schema';
 
@@ -11,9 +10,10 @@ export class MenusController
     @Post()
     async create(): Promise<void>
     {
+        // eslint-disable-next-line @typescript-eslint/ban-types
         const item: object = {
-            name: "ppge",
-            restaurantName: "abcd",
+            name: 'ppge',
+            restaurantName: 'abcd',
             categories: []
         };
         this.menusService.create(item);

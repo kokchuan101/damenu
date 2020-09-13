@@ -23,6 +23,16 @@
             "anonymous": "always",
             "named": "never",
             "asyncArrow" : "always"
-        }]
+        }],
+        "no-trailing-spaces": "error",
+        "new-parens": "error",
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 1,
+                "maxEOF": 0
+            }
+        ],
+        "comma-dangle": "error"
     }
 }

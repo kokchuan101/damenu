@@ -11,6 +11,7 @@ export class MenusService
         @InjectModel(Menu.name) private menuModel: Model<Menu>
     ) { }
 
+    // eslint-disable-next-line @typescript-eslint/ban-types
     async create(obj: object): Promise<Menu>
     {
         const createdItem: Menu = new this.menuModel(obj);
@@ -24,33 +25,34 @@ export class MenusService
             .exec();
 
         menusPromise.then(
-            (menus) => 
+            (menus: Menu[]) =>
             {
-                for (let menu of menus)
+                for (const menu of menus)
                 {
                     const itemsCopy: Item[] = [...menu.items];
-                    let sortedItem: object = {};
-                    for (let category of menu.categories)
+                    // eslint-disable-next-line @typescript-eslint/ban-types
+                    const sortedItem: object = {};
+                    for (const category of menu.categories)
                     {
-                        let indexs: number[] = []
-                        const filterItem: Item[] = itemsCopy.filter((item, index) =>
+                        const indexs: number[] = [];
+                        const filterItem: Item[] = itemsCopy.filter((item: Item, index: number) =>
                         {
                             if (item.category === category)
                             {
-                                indexs.push(index)
+                                indexs.push(index);
                                 return true;
-                            } else { return false }
+                            } else { return false; }
                         });
 
                         // remove filtered element
-                        indexs.forEach((index) => itemsCopy.splice(index, 1))
+                        indexs.forEach((index: number) => itemsCopy.splice(index, 1));
 
                         sortedItem[category] = filterItem;
                     }
                     menu.sortedItems = sortedItem;
                 }
             }
-        )
+        );
 
         return menusPromise;
     }
@@ -62,24 +64,25 @@ export class MenusService
             .exec();
 
         menuPromise.then(
-            (menu) =>
+            (menu: Menu) =>
             {
                 const itemsCopy: Item[] = [...menu.items];
-                let sortedItem: object = {};
-                for (let category of menu.categories)
+                // eslint-disable-next-line @typescript-eslint/ban-types
+                const sortedItem: object = {};
+                for (const category of menu.categories)
                 {
-                    let indexs: number[] = []
-                    const filterItem: Item[] = itemsCopy.filter((item, index) =>
+                    const indexs: number[] = [];
+                    const filterItem: Item[] = itemsCopy.filter((item: Item, index: number) =>
                     {
                         if (item.category === category)
                         {
-                            indexs.push(index)
+                            indexs.push(index);
                             return true;
-                        } else { return false }
+                        } else { return false; }
                     });
 
                     // remove filtered element
-                    indexs.forEach((index) => itemsCopy.splice(index, 1))
+                    indexs.forEach((index: number) => itemsCopy.splice(index, 1));
 
                     sortedItem[category] = filterItem;
                 }

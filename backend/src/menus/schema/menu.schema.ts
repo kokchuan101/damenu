@@ -17,7 +17,8 @@ export class Menu extends Document
     items: Item[];
 
     @Prop()
-    sortedItems: object
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    sortedItems: object;
 }
 
 export const MenuSchema: MongooseSchema<any> = SchemaFactory.createForClass(Menu);

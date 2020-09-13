@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ItemsModule } from './items/items.module';
 import { MenusModule } from './menus/menus.module';
-import { join } from 'path';
 
 @Module({
     imports: [

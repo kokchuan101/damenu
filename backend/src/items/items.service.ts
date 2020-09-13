@@ -8,6 +8,7 @@ export class ItemsService
 {
     constructor(@InjectModel(Item.name) private itemModel: Model<Item>) {}
 
+    // eslint-disable-next-line @typescript-eslint/ban-types
     async create(obj: object): Promise<Item>
     {
         const createdItem: Item = new this.itemModel(obj);
