@@ -11,9 +11,10 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
+    "serve": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "lint": "lint-staged",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -47,14 +48,14 @@
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.1",
     "jest": "26.4.2",
+    "lint-staged": "^10.3.0",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2",
     "ts-jest": "26.2.0",
     "ts-loader": "^6.2.1",
     "ts-node": "9.0.0",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^3.7.4",
-    "yorkie": "^2.0.0"
+    "typescript": "^3.7.4"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -69,5 +70,8 @@
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "lint-staged": {
+    "*.ts": "eslint"
   }
 }
