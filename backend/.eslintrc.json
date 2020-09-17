@@ -59,6 +59,7 @@
                 "maxEOF": 0
             }
         ],
-        "comma-dangle": "error"
+        "comma-dangle": "error",
+        "object-curly-spacing": ["error", "always"]
     }
 }

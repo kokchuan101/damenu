@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import ItemList from './ItemList.vue'
-import axios from 'axios'
-import { path } from '@/constant.js'
+import ItemList from './ItemList.vue';
+import axios from 'axios';
+import { path } from '@/constant.js';
 
 export default {
     components: {
@@ -26,18 +26,18 @@ export default {
         return {
             menu: {},
             itemList: []
-        }
+        };
     },
     created() {
         axios
             .get(path.menus.index + '/5f5500ea26f50147b4e0976c')
             .then((response) => {
-                this.menu = response.data
-                this.itemList = this.menu.sortedItems.DRINKS
-                this.category = 'drinks'
-            })
+                this.menu = response.data;
+                this.itemList = this.menu.sortedItems.DRINKS;
+                this.category = 'drinks';
+            });
     }
-}
+};
 </script>
 
 <style scoped>

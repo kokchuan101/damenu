@@ -83,10 +83,10 @@
 </template>
 
 <script>
-import { assetUrl, path } from '@/constant.js'
-import axios from 'axios'
-import alertify from 'alertifyjs'
-import validationMixin from '@/app/mixins/validation.mixin.js'
+import { assetUrl, path } from '@/constant.js';
+import axios from 'axios';
+import alertify from 'alertifyjs';
+import validationMixin from '@/app/mixins/validation.mixin.js';
 
 export default {
     mixins: [validationMixin],
@@ -116,42 +116,46 @@ export default {
                 category: [this.required('Category')],
                 price: [this.required('Price'), this.numeric('Price')]
             }
-        }
+        };
     },
     created() {
-        this.isEdit = false
-        this.initializeData()
+        this.isEdit = false;
+        this.initializeData();
     },
     methods: {
         initializeData() {
-            this.item.price = parseFloat(this.item.price).toFixed(2)
-            this.dataCopy = { ...this.item }
-            this.imgUrl = assetUrl + this.dataCopy.img
+            this.item.price = parseFloat(this.item.price).toFixed(2);
+            this.dataCopy = { ...this.item };
+            this.imgUrl = assetUrl + this.dataCopy.img;
         },
         formatPrice() {
             if (this.dataCopy.price) {
-                this.dataCopy.price = parseFloat(this.dataCopy.price).toFixed(2)
+                this.dataCopy.price = parseFloat(this.dataCopy.price).toFixed(
+                    2
+                );
             } else {
-                this.dataCopy.price = parseFloat(0.0).toFixed(2)
+                this.dataCopy.price = parseFloat(0.0).toFixed(2);
             }
         },
         handleSubmit(event) {
             if (this.$refs.form.validate()) {
-                const form = new FormData(event.target)
-                form.append('category', this.dataCopy.category)
+                const form = new FormData(event.target);
+                form.append('category', this.dataCopy.category);
 
                 if (this.isCreate) {
                     axios
                         .post(path.items.index, form)
                         .then((response) => {
-                            this.$alertify.success('Succesfully Added')
-                            this.$emit('refreshData', this.item.category, true)
+                            this.$alertify.success('Succesfully Added');
+                            this.$emit('refreshData', this.item.category, true);
                         })
                         .catch((error) => {
-                            this.$alertify.error(error.response.data.message[0])
-                        })
+                            this.$alertify.error(
+                                error.response.data.message[0]
+                            );
+                        });
                 } else {
-                    form.append('id', this.dataCopy._id)
+                    form.append('id', this.dataCopy._id);
 
                     if (
                         JSON.stringify(this.dataCopy) ===
@@ -159,34 +163,36 @@ export default {
                     ) {
                         this.$alertify.error(
                             'Unable to update, no change detected.'
-                        )
+                        );
                     } else {
                         axios
                             .patch(path.items.index, form)
                             .then((response) => {
-                                this.$alertify.success('Succesfully updated')
-                                this.refreshData()
+                                this.$alertify.success('Succesfully updated');
+                                this.refreshData();
                             })
                             .catch((error) => {
-                                this.$alertify.error(error.response.data.message[0])
-                            })
+                                this.$alertify.error(
+                                    error.response.data.message[0]
+                                );
+                            });
                     }
                 }
             } else {
-                this.$alertify.error('Validation error, please rectify fields')
+                this.$alertify.error('Validation error, please rectify fields');
             }
         },
         previewImg(file) {
             if (file) {
-                this.imgUrl = URL.createObjectURL(file)
+                this.imgUrl = URL.createObjectURL(file);
             }
         },
         onCancel() {
             if (this.isEdit) {
-                this.initializeData()
-                this.isEdit = false
+                this.initializeData();
+                this.isEdit = false;
             } else {
-                this.$emit('cancelCreate')
+                this.$emit('cancelCreate');
             }
         },
         onDelete() {
@@ -194,25 +200,25 @@ export default {
                 axios
                     .delete(path.items.index + `/${this.dataCopy._id}`)
                     .then((response) => {
-                        alertify.success('Succesfully updated')
-                        this.refreshData()
+                        alertify.success('Succesfully updated');
+                        this.refreshData();
                     })
                     .catch((error) => {
-                        this.$alertify.error(error)
-                    })
-            })
+                        this.$alertify.error(error);
+                    });
+            });
         },
         refreshData() {
-            this.$emit('refreshData', this.item.category)
-            this.isEdit = false
+            this.$emit('refreshData', this.item.category);
+            this.isEdit = false;
         }
     },
     watch: {
         item() {
-            this.initializeData()
+            this.initializeData();
         }
     }
-}
+};
 </script>
 
 <style scoped>

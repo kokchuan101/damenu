@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { assetUrl } from '@/constant.js'
+import { assetUrl } from '@/constant.js';
 
 export default {
     props: {
@@ -25,10 +25,10 @@ export default {
     },
     computed: {
         imgUrl() {
-            return assetUrl + this.data.img
+            return assetUrl + this.data.img;
         }
     }
-}
+};
 </script>
 
 <style scoped>

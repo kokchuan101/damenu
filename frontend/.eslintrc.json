@@ -33,6 +33,10 @@
                 "maxEOF": 0
             }
         ],
-        "comma-dangle": "error"
+        "comma-dangle": "error",
+        "semi": ["error", "always"],
+        "semi-style": ["error", "last"],
+        "no-extra-semi": ["error"],
+        "no-var": "error"
     }
 }
