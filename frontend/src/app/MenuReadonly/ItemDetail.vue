@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { assetUrl } from '../../../constant'
+import { assetUrl } from '@/constant.js'
 
 export default {
     props: {

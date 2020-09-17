@@ -1,7 +1,10 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { Item } from './schema/item.schema';
-import { Types } from 'mongoose';
+import { CreateItemDto } from './dto/createItem.dto';
+import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/file.interceptor';
+import { UseInterceptors } from '@nestjs/common/decorators/core/use-interceptors.decorator';
+import { UpdateItemDto } from './dto/updateItem.dto';
 
 @Controller('items')
 export class ItemsController
@@ -9,20 +12,10 @@ export class ItemsController
     constructor(private itemsService: ItemsService) { }
 
     @Post()
-    async create(): Promise<void>
+    @UseInterceptors(FileInterceptor('img'))
+    async create(@UploadedFile() file: Express.Multer.File, @Body() item: CreateItemDto): Promise<void>
     {
-        // eslint-disable-next-line @typescript-eslint/ban-types
-        const item: object = {
-            name: 'Fried Rice',
-            code: '',
-            img: 'img3.jpg',
-            price: 9.90,
-            description: 'Uncle Roger approve this',
-            category: 'MAIN DISH',
-            order: 1,
-            menu: Types.ObjectId('5f5500ea26f50147b4e0976c')
-        };
-        this.itemsService.create(item);
+        this.itemsService.create(item, file);
     }
 
     @Get()
@@ -31,10 +24,17 @@ export class ItemsController
         return this.itemsService.findAll();
     }
 
-    // @Get('img')
-    // async getImg(@Res() response: express.Response): Promise<any>
-    // {
-    //     response.sendFile('img1.jpg', {root: 'public'});
-    // }
+    @Delete(':id')
+    async delete(@Param('id') id: string): Promise<void>
+    {
+        this.itemsService.delete(id);
+    }
+
+    @Patch()
+    @UseInterceptors(FileInterceptor('img'))
+    async update(@UploadedFile() file: Express.Multer.File, @Body() item: UpdateItemDto): Promise<void>
+    {
+        this.itemsService.update(item, file);
+    }
 
 }
