@@ -18,7 +18,7 @@ export class CreateItemDto
     category: string;
 
     @IsNotEmpty()
-    @IsDecimal({decimal_digits: '2,2'})
+    @IsDecimal({ decimal_digits: '2,2' })
     price: number;
 
     description: string;

@@ -1,7 +1,7 @@
-var url = 'http://localhost:3000'
-var assetUrl = url + '/public'
+const url = 'http://localhost:3000';
+const assetUrl = url + '/public';
 
-var path =
+const path =
 {
     menus:
     {
@@ -11,13 +11,13 @@ var path =
     {
         index: '/items'
     }
-}
+};
 
-for (var key in path) {
-    var obj = path[key]
-    for (var key2 in obj) {
-        path[key][key2] = url + path[key][key2]
+for (const key in path) {
+    const obj = path[key];
+    for (const key2 in obj) {
+        path[key][key2] = url + path[key][key2];
     }
 }
 
-export { url, path, assetUrl }
+export { url, path, assetUrl };

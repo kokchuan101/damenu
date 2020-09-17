@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import ItemDetail from './ItemDetail.vue'
+import ItemDetail from './ItemDetail.vue';
 
 export default {
     components: {
@@ -26,7 +26,7 @@ export default {
             required: true
         }
     }
-}
+};
 </script>
 
 <style scoped>

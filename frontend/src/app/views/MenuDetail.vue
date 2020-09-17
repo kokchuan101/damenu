@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import ItemList from '../components/item/ItemList'
-import axios from 'axios'
-import { path } from '../../constant'
+import ItemList from '../components/item/ItemList';
+import axios from 'axios';
+import { path } from '../../constant';
 
 export default {
     components: {
@@ -26,17 +26,17 @@ export default {
         axios
             .get(path.menus.index + '/5f5500ea26f50147b4e0976c')
             .then((response) => {
-                this.menu = response.data
-                this.itemList = this.menu.sortedItems.DRINKS
-            })
+                this.menu = response.data;
+                this.itemList = this.menu.sortedItems.DRINKS;
+            });
     },
     data() {
         return {
             menu: {},
             itemList: []
-        }
+        };
     }
-}
+};
 </script>
 
 <style scoped>

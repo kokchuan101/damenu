@@ -29,10 +29,10 @@
 </template>
 
 <script>
-import ItemList from './ItemList.vue'
-import ItemDetail from './ItemDetail.vue'
-import axios from 'axios'
-import { path } from '@/constant.js'
+import ItemList from './ItemList.vue';
+import ItemDetail from './ItemDetail.vue';
+import axios from 'axios';
+import { path } from '@/constant.js';
 
 export default {
     components: {
@@ -46,36 +46,36 @@ export default {
             category: '',
             newItem: null,
             isCreate: false
-        }
+        };
     },
     created() {
         axios
             .get(path.menus.index + '/5f5500ea26f50147b4e0976c')
             .then((response) => {
-                this.menu = response.data
-                this.category = this.menu.categories[0]
-                this.itemList = this.menu.sortedItems[this.category]
-            })
+                this.menu = response.data;
+                this.category = this.menu.categories[0];
+                this.itemList = this.menu.sortedItems[this.category];
+            });
     },
     methods: {
         refreshData(category, isCreate = false) {
             axios
                 .get(path.menus.index + '/5f5500ea26f50147b4e0976c')
                 .then((response) => {
-                    this.menu = response.data
-                    this.changeList(category)
+                    this.menu = response.data;
+                    this.changeList(category);
                     if (isCreate) {
-                        this.cancelCreate()
+                        this.cancelCreate();
                     }
-                })
+                });
         },
         changeList(category) {
-            this.category = category
-            this.itemList = this.menu.sortedItems[this.category]
+            this.category = category;
+            this.itemList = this.menu.sortedItems[this.category];
         },
         createItem() {
             if (!this.isCreate) {
-                this.isCreate = true
+                this.isCreate = true;
                 this.newItem = {
                     code: '',
                     name: '',
@@ -83,15 +83,15 @@ export default {
                     price: 0.0,
                     img: '/placeholder.png',
                     menuId: this.menu._id
-                }
+                };
             }
         },
         cancelCreate() {
-            this.isCreate = false
-            this.newItem = null
+            this.isCreate = false;
+            this.newItem = null;
         }
     }
-}
+};
 </script>
 
 <style scoped>
