@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import MenuDetail from './app/views/MenuDetail.vue'
+import MenuView from '@/app/MenuReadonly/MenuView.vue'
 
 Vue.use(VueRouter)
 
@@ -8,7 +8,12 @@ const routes = [
     {
         path: '/',
         name: 'Home',
-        component: MenuDetail
+        component: MenuView
+    },
+    {
+        path: '/admin',
+        name: 'admin',
+        component: () => import(/* webpackChunkName: "MenuEditable" */ '@/app/MenuEditable/MenuView.vue')
     }
     // {
     //     path: '/about',

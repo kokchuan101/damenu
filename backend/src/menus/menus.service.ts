@@ -21,7 +21,7 @@ export class MenusService
     async findAll(): Promise<Menu[]>
     {
         const menusPromise: Promise<Menu[]> = this.menuModel.find()
-            .populate({ path: 'items', options: { sort: { 'order': 1 } } })
+            .populate({ path: 'items', options: { sort: { 'code': 1 } } })
             .exec();
 
         menusPromise.then(
@@ -60,7 +60,7 @@ export class MenusService
     async findOne(id: string): Promise<Menu>
     {
         const menuPromise: Promise<Menu> = this.menuModel.findById(id)
-            .populate({ path: 'items', options: { sort: { 'order': 1 } } })
+            .populate({ path: 'items', options: { sort: { 'code': 1 } } })
             .exec();
 
         menuPromise.then(

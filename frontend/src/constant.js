@@ -1,11 +1,15 @@
 var url = 'http://localhost:3000'
-var assetUrl = url + '/public/'
+var assetUrl = url + '/public'
 
 var path =
 {
     menus:
     {
         index: '/menus'
+    },
+    items:
+    {
+        index: '/items'
     }
 }
 

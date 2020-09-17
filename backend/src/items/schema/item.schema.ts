@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as _Schema } from 'mongoose';
 
-@Schema()
+@Schema({ timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } })
 export class Item extends Document
 {
     @Prop()
@@ -24,7 +24,7 @@ export class Item extends Document
     category: string;
 
     @Prop()
-    order: number;
+    menuId: string;
 }
 
 export const ItemSchema: _Schema<any> = SchemaFactory.createForClass(Item);
