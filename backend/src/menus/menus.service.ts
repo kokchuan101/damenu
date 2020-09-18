@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Menu } from './schema/menu.schema';
 import { Item } from '../items/schema/item.schema';
+import { UpdateMenuCategoriesDto } from './dto/updateMenuCategories.dto';
 
 @Injectable()
 export class MenusService
@@ -91,5 +92,29 @@ export class MenusService
         );
 
         return menuPromise;
+    }
+
+    async deleteCategory(): Promise<void>
+    {
+        const menuPromise: Promise<Menu> = this.menuModel.updateOne(
+            { '_id': 'id' },
+            { '$pull': { 'categories': 'data.category' } }
+        ).exec();
+
+        menuPromise.then((menu: Menu) =>
+        {
+            console.log('weee');
+        });
+    }
+
+    async updateCategories(data: UpdateMenuCategoriesDto): Promise<void>
+    {
+        const id: string = data.id;
+        delete data.id;
+
+        this.menuModel.updateOne(
+            { '_id': id },
+            { 'categories': data.categories }
+        ).exec();
     }
 }

@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Param } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Patch } from '@nestjs/common';
+import { UpdateMenuCategoriesDto } from './dto/updateMenuCategories.dto';
 import { MenusService } from './menus.service';
 import { Menu } from './schema/menu.schema';
 
@@ -31,4 +32,10 @@ export class MenusController
         return this.menusService.findOne(id);
     }
 
+    @Patch('categories')
+    async updateCategories(@Body() data: UpdateMenuCategoriesDto): Promise<void>
+    {
+        console.log(data);
+        this.menusService.updateCategories(data);
+    }
 }

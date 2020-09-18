@@ -15,6 +15,7 @@
                         label="Code"
                         counter="4"
                         :rules="rules.code"
+                        :hide-details="!(isEdit||isCreate)"
                         :filled="!(isEdit||isCreate)"
                         :readonly="!(isEdit||isCreate)"
                         :clearable="isEdit||isCreate"
@@ -85,11 +86,10 @@
 <script>
 import { assetUrl, path } from '@/constant.js';
 import axios from 'axios';
-import alertify from 'alertifyjs';
-import validationMixin from '@/app/mixins/validation.mixin.js';
+import ValidationMixin from '@/app/mixins/validation.mixin.js';
 
 export default {
-    mixins: [validationMixin],
+    mixins: [ValidationMixin],
     props: {
         item: {
             type: Object,
@@ -200,7 +200,7 @@ export default {
                 axios
                     .delete(path.items.index + `/${this.dataCopy._id}`)
                     .then((response) => {
-                        alertify.success('Succesfully updated');
+                        this.$alertify.success('Succesfully updated');
                         this.refreshData();
                     })
                     .catch((error) => {

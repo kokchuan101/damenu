@@ -5,7 +5,8 @@ const path =
 {
     menus:
     {
-        index: '/menus'
+        index: '/menus',
+        categories: '/menus/categories'
     },
     items:
     {

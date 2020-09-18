@@ -1,11 +1,7 @@
 <template>
     <div class="row">
         <div class="col-12">
-            <v-btn
-                v-for="category in menu.categories"
-                :key="category"
-                @click="this.itemList = this.menu.sortedItems[category]"
-            >{{category}}</v-btn>
+            <MenuCategory :categories="menu.categories" @changeList="changeList"></MenuCategory>
         </div>
         <div class="col-12">
             <ItemList :data="itemList"/>
@@ -15,12 +11,14 @@
 
 <script>
 import ItemList from './ItemList.vue';
+import MenuCategory from '@/app/components/menu/MenuCategory.vue';
 import axios from 'axios';
 import { path } from '@/constant.js';
 
 export default {
     components: {
-        ItemList
+        ItemList,
+        MenuCategory
     },
     data() {
         return {
@@ -36,6 +34,11 @@ export default {
                 this.itemList = this.menu.sortedItems.DRINKS;
                 this.category = 'drinks';
             });
+    },
+    methods: {
+        changeList(category) {
+            this.itemList = this.menu.sortedItems[category];
+        }
     }
 };
 </script>
