@@ -25,7 +25,11 @@ export default {
     },
     computed: {
         imgUrl() {
-            return assetUrl + this.data.img;
+            if (this.data.img) {
+                return assetUrl + this.data.img;
+            } else {
+                return assetUrl + '/placeholder.png';
+            }
         }
     }
 };

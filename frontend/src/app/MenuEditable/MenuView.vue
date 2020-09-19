@@ -1,13 +1,21 @@
 <template>
-    <div class="row">
-        <div class="col-12">
+    <v-row>
+        <v-col cols="12">
+            <MenuCategory
+                :categories="menu.categories"
+                :isCreate="isCreate"
+                ref="MenuCategory"
+                @changeList="changeList">
+            </MenuCategory>
+        </v-col>
+        <v-col cols="12">
             <v-btn
-                v-for="category in menu.categories"
-                :key="category"
-                @click="changeList(category)"
-            >{{category}}</v-btn>
-        </div>
-        <div class="col-12">
+                color="info"
+                :disabled="isCreate"
+                @click="categoryOverlay = true"
+            >Manage Category</v-btn>
+        </v-col>
+        <v-col cols="12">
             <v-btn
                 color="success"
                 @click="createItem"
@@ -21,23 +29,35 @@
                 @refreshData="refreshData"
                 @cancelCreate="cancelCreate"
             />
-        </div>
-        <div class="col-12">
+        </v-col>
+        <v-col cols="12">
             <ItemList :items="itemList" :categories="menu.categories" @refreshData="refreshData" />
-        </div>
-    </div>
+        </v-col>
+        <v-overlay :value="categoryOverlay">
+            <CategoryManager
+                :categories="menu.categories"
+                :menuId="menu._id"
+                @closeOverlay="categoryOverlay = false"
+                @refreshData="refreshData"
+                ></CategoryManager>
+        </v-overlay>
+    </v-row>
 </template>
 
 <script>
 import ItemList from './ItemList.vue';
 import ItemDetail from './ItemDetail.vue';
+import CategoryManager from './CategoryManager.vue';
+import MenuCategory from '@/app/components/menu/MenuCategory.vue';
 import axios from 'axios';
 import { path } from '@/constant.js';
 
 export default {
     components: {
         ItemList,
-        ItemDetail
+        ItemDetail,
+        CategoryManager,
+        MenuCategory
     },
     data() {
         return {
@@ -45,7 +65,8 @@ export default {
             itemList: [],
             category: '',
             newItem: null,
-            isCreate: false
+            isCreate: false,
+            categoryOverlay: false
         };
     },
     created() {
@@ -53,8 +74,7 @@ export default {
             .get(path.menus.index + '/5f5500ea26f50147b4e0976c')
             .then((response) => {
                 this.menu = response.data;
-                this.category = this.menu.categories[0];
-                this.itemList = this.menu.sortedItems[this.category];
+                this.changeList();
             });
     },
     methods: {
@@ -64,13 +84,23 @@ export default {
                 .then((response) => {
                     this.menu = response.data;
                     this.changeList(category);
+
                     if (isCreate) {
                         this.cancelCreate();
                     }
+
+                    if (this.categoryOverlay) {
+                        this.categoryOverlay = false;
+                        this.$refs.MenuCategory.click();
+                    }
                 });
         },
-        changeList(category) {
-            this.category = category;
+        changeList(category = null) {
+            if (category) {
+                this.category = category;
+            } else {
+                this.category = this.menu.categories[0];
+            }
             this.itemList = this.menu.sortedItems[this.category];
         },
         createItem() {
@@ -95,4 +125,8 @@ export default {
 </script>
 
 <style scoped>
+.v-overlay__content {
+    width: 100% !important;
+    color: blue;
+}
 </style>

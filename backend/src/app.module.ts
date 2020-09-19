@@ -7,7 +7,7 @@ import { MenusModule } from './menus/menus.module';
 
 @Module({
     imports: [
-        MongooseModule.forRoot('mongodb://localhost:27017/damenu'),
+        MongooseModule.forRoot('mongodb://localhost:27017/damenu', { 'useFindAndModify': false }),
         ItemsModule,
         MenusModule
     ],
