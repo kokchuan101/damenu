@@ -237,10 +237,10 @@ export default {
     border-bottom: 2px black solid;
 }
 
-@media screen and (max-width: 991px) {
+@media screen and (max-width: 959px) {
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 960px) {
     .item-code {
         width: 30%;
         display: inline-block;
