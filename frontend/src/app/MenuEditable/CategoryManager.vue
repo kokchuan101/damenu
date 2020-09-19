@@ -35,7 +35,7 @@
                         <v-btn
                             :disabled="index===dataCopy.length-1"
                             @click="move(index, 1)">Down</v-btn>
-                        <v-btn color="red">Delete</v-btn>
+                        <v-btn color="red" @click="deleteCategory(category)">Delete</v-btn>
                     </v-card>
                 </v-card-text>
                 <v-card-actions>
@@ -90,6 +90,19 @@ export default {
                 const category = this.dataCopy.splice(index, 1)[0];
                 this.dataCopy.splice(newIndex, 0, category);
             }
+        },
+        deleteCategory(category) {
+            axios
+                .delete(path.menus.categories, {
+                    params: { id: this.menuId, category: category }
+                })
+                .then((response) => {
+                    this.$emit('refreshData');
+                    this.$alertify.success('Successfully deleted');
+                })
+                .catch((error) => {
+                    this.$alertify.error(error.response.data.message);
+                });
         },
         closeOverlay() {
             this.$emit('closeOverlay');

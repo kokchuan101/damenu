@@ -126,7 +126,12 @@ export default {
         initializeData() {
             this.item.price = parseFloat(this.item.price).toFixed(2);
             this.dataCopy = { ...this.item };
-            this.imgUrl = assetUrl + this.dataCopy.img;
+
+            if (this.dataCopy.img) {
+                this.imgUrl = assetUrl + this.dataCopy.img;
+            } else {
+                this.imgUrl = assetUrl + '/placeholder.png';
+            }
         },
         formatPrice() {
             if (this.dataCopy.price) {

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Patch, Delete, Query } from '@nestjs/common';
 import { UpdateMenuCategoriesDto } from './dto/updateMenuCategories.dto';
 import { MenusService } from './menus.service';
 import { Menu } from './schema/menu.schema';
@@ -32,10 +32,15 @@ export class MenusController
         return this.menusService.findOne(id);
     }
 
+    @Delete('categories')
+    async deleteCategory(@Query('id') id: string, @Query('category') category: string): Promise<void>
+    {
+        return this.menusService.deleteCategory(id, category);
+    }
+
     @Patch('categories')
     async updateCategories(@Body() data: UpdateMenuCategoriesDto): Promise<void>
     {
-        console.log(data);
         this.menusService.updateCategories(data);
     }
 }

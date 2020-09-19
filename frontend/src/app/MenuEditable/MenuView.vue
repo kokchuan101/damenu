@@ -38,7 +38,8 @@
                 :categories="menu.categories"
                 :menuId="menu._id"
                 @closeOverlay="categoryOverlay = false"
-                @refreshData="refreshData"></CategoryManager>
+                @refreshData="refreshData"
+                ></CategoryManager>
         </v-overlay>
     </v-row>
 </template>
@@ -83,10 +84,15 @@ export default {
                 .then((response) => {
                     this.menu = response.data;
                     this.changeList(category);
+
                     if (isCreate) {
                         this.cancelCreate();
                     }
-                    this.categoryOverlay = false;
+
+                    if (this.categoryOverlay) {
+                        this.categoryOverlay = false;
+                        this.$refs.MenuCategory.click();
+                    }
                 });
         },
         changeList(category = null) {

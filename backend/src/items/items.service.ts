@@ -30,13 +30,13 @@ export class ItemsService
                 const filename: string = path.join(process.cwd(), 'public' + item.img);
 
                 fs.promises.writeFile(filename, file.buffer);
-                item.save();
-                this.menuModel.updateOne(
-                    { _id: item.menuId },
-                    { '$push': { 'items': item.id } }
-                ).exec();
-
             }
+
+            item.save();
+            this.menuModel.updateOne(
+                { _id: item.menuId },
+                { '$push': { 'items': item.id } }
+            ).exec();
         });
     }
 

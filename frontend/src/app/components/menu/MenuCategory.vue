@@ -9,7 +9,7 @@
                     active-class="purple lighten-2 white--text"
                     :disabled="isCreate"
                     @click="changeList(category);toggle();"
-                    :ref="toggle+index"
+                    ref="toggle"
                 >{{category}}</v-btn>
         </v-slide-item>
     </v-slide-group>
@@ -32,6 +32,9 @@ export default {
     methods: {
         changeList(category) {
             this.$emit('changeList', category);
+        },
+        click() {
+            this.$refs.toggle[0].$el.click();
         }
     }
 };
