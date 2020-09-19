@@ -28,11 +28,12 @@ export default {
     },
     created() {
         axios
-            .get(path.menus.index + '/5f5500ea26f50147b4e0976c')
+            .get(path.menus.index + `/${this.$route.params.id}`)
             .then((response) => {
                 this.menu = response.data;
                 this.itemList = this.menu.sortedItems.DRINKS;
-                this.category = 'drinks';
+                this.category = this.menu.categories[0];
+                this.itemList = this.menu.sortedItems[this.category];
             });
     },
     methods: {

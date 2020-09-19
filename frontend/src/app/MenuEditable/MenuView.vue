@@ -8,19 +8,26 @@
                 @changeList="changeList">
             </MenuCategory>
         </v-col>
-        <v-col cols="12">
-            <v-btn
-                color="info"
-                :disabled="isCreate"
-                @click="categoryOverlay = true"
-            >Manage Category</v-btn>
-        </v-col>
+
         <v-col cols="12">
             <v-btn
                 color="success"
                 @click="createItem"
                 :disabled="isCreate"
             >Add</v-btn>
+            <v-btn
+                color="info"
+                :disabled="isCreate"
+                @click="overlay.category = true"
+            >Manage Category</v-btn>
+            <v-btn
+                @click="preview">
+                Preview Menu
+            </v-btn>
+            <v-btn
+                @click="generateQr">
+                Generate QR Code
+            </v-btn>
             <ItemDetail
                 v-if="newItem"
                 :item="newItem"
@@ -33,13 +40,24 @@
         <v-col cols="12">
             <ItemList :items="itemList" :categories="menu.categories" @refreshData="refreshData" />
         </v-col>
-        <v-overlay :value="categoryOverlay">
+        <v-overlay :value="overlay.category">
             <CategoryManager
                 :categories="menu.categories"
                 :menuId="menu._id"
-                @closeOverlay="categoryOverlay = false"
+                @closeOverlay="overlay.category = false"
                 @refreshData="refreshData"
                 ></CategoryManager>
+        </v-overlay>
+        <v-overlay :value="overlay.qrcode">
+            <v-row justify="center" alignContent="center" class="qrcode-wrapper">
+                <v-col cols="10" lg="12" class="d-flex justify-center">
+                    <img :src="qrcode" class="qrcode-img"/>
+                </v-col>
+                <v-col cols="10" lg="12" class="d-flex justify-center p-0">
+                    <v-btn color="success" @click="download" width="45%" class="mx-1 mb-2 mx--lg-2">Download</v-btn>
+                    <v-btn @click="overlay.qrcode = false" width="45%" class="mx-1 mb-2 mx--lg-2">close</v-btn>
+                </v-col>
+            </v-row>
         </v-overlay>
     </v-row>
 </template>
@@ -51,6 +69,7 @@ import CategoryManager from './CategoryManager.vue';
 import MenuCategory from '@/app/components/menu/MenuCategory.vue';
 import axios from 'axios';
 import { path } from '@/constant.js';
+import QRCode from 'qrcode';
 
 export default {
     components: {
@@ -66,7 +85,11 @@ export default {
             category: '',
             newItem: null,
             isCreate: false,
-            categoryOverlay: false
+            qrcode: '',
+            overlay: {
+                category: false,
+                qrcode: false
+            }
         };
     },
     created() {
@@ -89,8 +112,8 @@ export default {
                         this.cancelCreate();
                     }
 
-                    if (this.categoryOverlay) {
-                        this.categoryOverlay = false;
+                    if (this.overlay.category) {
+                        this.overlay.category = false;
                         this.$refs.MenuCategory.click();
                     }
                 });
@@ -119,14 +142,59 @@ export default {
         cancelCreate() {
             this.isCreate = false;
             this.newItem = null;
+        },
+        preview() {
+            const route = this.$router.resolve({
+                name: 'MenuViewReadonly',
+                params: { id: this.menu._id }
+            });
+            window.open(route.href);
+        },
+        generateQr() {
+            this.overlay.qrcode = true;
+
+            const route = this.$router.resolve({
+                name: 'MenuViewReadonly',
+                params: { id: this.menu._id }
+            });
+
+            QRCode.toDataURL(
+                `${window.location.origin}/${route.href}`,
+                { errorCorrectionLevel: 'H', width: '500' },
+                (er, url) => {
+                    this.qrcode = url;
+                }
+            );
+        },
+        download() {
+            const link = document.createElement('a');
+            link.download = 'qrcode.png';
+            link.href = this.qrcode;
+            link.click();
         }
     }
 };
 </script>
 
 <style scoped>
-.v-overlay__content {
-    width: 100% !important;
-    color: blue;
+.qrcode-wrapper {
+    background: white;
+}
+
+.qrcode-img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+@media screen and (max-width: 959px) {
+    .qrcode-wrapper {
+        width: 80vw;
+    }
+}
+
+@media screen and (min-width: 960px) {
+    .qrcode-wrapper {
+        width: 40vw;
+    }
 }
 </style>
