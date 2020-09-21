@@ -11,6 +11,12 @@ const path =
     items:
     {
         index: '/items'
+    },
+    accounts:
+    {
+        index: '/accounts',
+        login: '/accounts/login',
+        resetPassword: '/accounts/reset'
     }
 };
 
