@@ -1,15 +1,15 @@
 <template>
-    <v-row>
-        <v-col cols="12">
+    <div class=row>
+        <div class="col-12">
             <MenuCategory
                 :categories="menu.categories"
                 :isCreate="isCreate"
                 ref="MenuCategory"
                 @changeList="changeList">
             </MenuCategory>
-        </v-col>
+        </div>
 
-        <v-col cols="12">
+        <div class="col-12">
             <v-btn
                 color="success"
                 @click="createItem"
@@ -36,11 +36,11 @@
                 @refreshData="refreshData"
                 @cancelCreate="cancelCreate"
             />
-        </v-col>
-        <v-col cols="12">
+        </div>
+        <div class="col-12">
             <ItemList :items="itemList" :categories="menu.categories" @refreshData="refreshData" />
-        </v-col>
-        <v-overlay :value="overlay.category">
+        </div>
+        <v-overlay :value="overlay.category" :dark="false">
             <CategoryManager
                 :categories="menu.categories"
                 :menuId="menu._id"
@@ -59,7 +59,7 @@
                 </v-col>
             </v-row>
         </v-overlay>
-    </v-row>
+    </div>
 </template>
 
 <script>
@@ -80,7 +80,7 @@ export default {
     },
     data() {
         return {
-            menu: {},
+            menu: { _id: '' },
             itemList: [],
             category: '',
             newItem: null,
