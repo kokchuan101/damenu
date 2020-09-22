@@ -94,7 +94,7 @@ export default {
     },
     created() {
         axios
-            .get(path.menus.index + '/5f5500ea26f50147b4e0976c')
+            .get(path.menus.index + `/${this.$route.params.id}`)
             .then((response) => {
                 this.menu = response.data;
                 this.changeList();
@@ -103,7 +103,7 @@ export default {
     methods: {
         refreshData(category, isCreate = false) {
             axios
-                .get(path.menus.index + '/5f5500ea26f50147b4e0976c')
+                .get(path.menus.index + `/${this.$route.params.id}`)
                 .then((response) => {
                     this.menu = response.data;
                     this.changeList(category);

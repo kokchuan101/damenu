@@ -6,22 +6,45 @@ import { Item } from '../items/schema/item.schema';
 import { UpdateMenuCategoriesDto } from './dto/updateMenuCategories.dto';
 import * as fs from 'fs';
 import * as path from 'path';
+import { CreateMenuDto } from './dto/createMenu.dto';
+import { UpdateMenuDto } from './dto/updateMenu.dto';
+import { Account } from 'src/accounts/schema/account.schema';
 
 @Injectable()
 export class MenusService
 {
     constructor(
         @InjectModel(Menu.name) private menuModel: Model<Menu>,
-        @InjectModel(Item.name) private itemModel: Model<Item>
+        @InjectModel(Item.name) private itemModel: Model<Item>,
+        @InjectModel(Account.name) private accountModel: Model<Account>
     ) { }
 
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    async create(obj: object): Promise<Menu>
+    async findUserMenus(id: string): Promise<Menu[]>
     {
-        const createdItem: Menu = new this.menuModel(obj);
-        return createdItem.save();
+        const account: Account = await this.accountModel.findById(id).populate('menus').exec();
+        return account.menus;
     }
 
+    async create(createMenuDto: CreateMenuDto): Promise<void>
+    {
+        const { userId, ...result }: { userId: string; } = createMenuDto;
+
+        const createdMenu: Menu = new this.menuModel(result);
+        const menu: Menu = await createdMenu.save();
+
+        this.accountModel.findByIdAndUpdate(userId, { '$push': { 'menus': menu.id } }).exec();
+    }
+
+    async update(updateMenuDto: UpdateMenuDto): Promise<void>
+    {
+        const { id, ...result }: { id: string; } = updateMenuDto;
+        this.menuModel.updateOne({ '_id': id }, result).exec();
+    }
+
+    async delete(id: string): Promise<void>
+    {
+        this.menuModel.findByIdAndDelete(id).exec();
+    }
     // eslint-disable-next-line @typescript-eslint/ban-types
     transformMenuItems(menu: Menu): object
     {
@@ -47,25 +70,6 @@ export class MenusService
         }
 
         return sortedItem;
-    }
-
-    async findAll(): Promise<Menu[]>
-    {
-        const menusPromise: Promise<Menu[]> = this.menuModel.find()
-            .populate({ path: 'items', options: { sort: { 'code': 1 } } })
-            .exec();
-
-        menusPromise.then(
-            (menus: Menu[]) =>
-            {
-                for (const menu of menus)
-                {
-                    menu.sortedItems = this.transformMenuItems(menu);
-                }
-            }
-        );
-
-        return menusPromise;
     }
 
     async findOne(id: string): Promise<Menu>

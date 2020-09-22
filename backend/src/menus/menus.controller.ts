@@ -1,4 +1,6 @@
 import { Controller, Get, Post, Param, Body, Patch, Delete, Query } from '@nestjs/common';
+import { CreateMenuDto } from './dto/createMenu.dto';
+import { UpdateMenuDto } from './dto/updateMenu.dto';
 import { UpdateMenuCategoriesDto } from './dto/updateMenuCategories.dto';
 import { MenusService } from './menus.service';
 import { Menu } from './schema/menu.schema';
@@ -8,22 +10,28 @@ export class MenusController
 {
     constructor(private menusService: MenusService) { }
 
-    @Post()
-    async create(): Promise<void>
+    @Get('/user/:id')
+    async findUserMenus(@Param('id') id: string): Promise<Menu[]>
     {
-        // eslint-disable-next-line @typescript-eslint/ban-types
-        const item: object = {
-            name: 'ppge',
-            restaurantName: 'abcd',
-            categories: []
-        };
-        this.menusService.create(item);
+        return this.menusService.findUserMenus(id);
     }
 
-    @Get()
-    async findAll(): Promise<Menu[]>
+    @Post()
+    async create(@Body() createMenuDto: CreateMenuDto): Promise<void>
     {
-        return this.menusService.findAll();
+        this.menusService.create(createMenuDto);
+    }
+
+    @Patch()
+    async update(@Body() updateMenuDto: UpdateMenuDto): Promise<void>
+    {
+        this.menusService.update(updateMenuDto);
+    }
+
+    @Delete(':id')
+    async delete(@Param('id') id: string): Promise<void>
+    {
+        this.menusService.delete(id);
     }
 
     @Get(':id')
@@ -35,7 +43,7 @@ export class MenusController
     @Delete('categories')
     async deleteCategory(@Query('id') id: string, @Query('category') category: string): Promise<void>
     {
-        return this.menusService.deleteCategory(id, category);
+        this.menusService.deleteCategory(id, category);
     }
 
     @Patch('categories')

@@ -9,11 +9,12 @@ export class Menu extends Document
     name: string;
 
     @Prop()
+    restaurantName: string;
 
-    @Prop()
+    @Prop({ default: [] })
     categories: string[];
 
-    @Prop([{ type: MongooseSchema.Types.ObjectId, ref: Item.name }])
+    @Prop([{ type: MongooseSchema.Types.ObjectId, ref: Item.name, default: [] }])
     items: Item[];
 
     @Prop()
