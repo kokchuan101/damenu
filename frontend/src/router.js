@@ -17,12 +17,14 @@ const routes = [
     {
         path: '/menu',
         name: 'MenuListView',
-        component: () => import(/* webpackChunkName: "RegisterView" */ '@/app/MenuList/MenuListView.vue')
+        component: () => import(/* webpackChunkName: "RegisterView" */ '@/app/MenuList/MenuListView.vue'),
+        meta: { requiresAuth: true }
     },
     {
         path: '/menu/:id',
         name: 'MenuViewEditable',
-        component: () => import(/* webpackChunkName: "MenuEditable" */ '@/app/MenuEditable/MenuView.vue')
+        component: () => import(/* webpackChunkName: "MenuEditable" */ '@/app/MenuEditable/MenuView.vue'),
+        meta: { requiresAuth: true }
     },
     {
         path: '/view/menu/:id',
@@ -33,6 +35,18 @@ const routes = [
 
 const router = new VueRouter({
     routes
+});
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.requiresAuth) {
+        if (!sessionStorage.user) {
+            next({ name: 'LoginView' });
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
 });
 
 export default router;
