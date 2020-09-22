@@ -1,50 +1,47 @@
 <template>
-    <v-row>
-        <v-col cols="12">
-            <v-card light width="100%">
-                <v-card-title>Manage Category</v-card-title>
-                <v-card-text>
-                    <v-row>
-                        <v-col cols="12" lg="8">
-                            <v-text-field
-                                v-model="newCategory"
-                                label="New Category"
-                                dense
-                                clearable
-                                :rules="rules"
-                                ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" lg="4">
-                            <v-btn
-                                width="100%"
-                                color="success"
-                                :disabled="!valid"
-                                @click="add">Add</v-btn>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <v-divider></v-divider>
-                <v-card-title>Category Order</v-card-title>
-                <v-card-text v-for="(category,index) in dataCopy" :key="index">
-                    <v-card elevation="10" class="p-2">
-                        {{index + 1}}&nbsp;&nbsp;{{category}}
-                        <v-btn
-                            class="ml-5"
-                            :disabled="index===0"
-                            @click="move(index, -1)">Up</v-btn>
-                        <v-btn
-                            :disabled="index===dataCopy.length-1"
-                            @click="move(index, 1)">Down</v-btn>
-                        <v-btn color="red" @click="deleteCategory(category)">Delete</v-btn>
-                    </v-card>
-                </v-card-text>
-                <v-card-actions>
-                    <v-btn @click="submit" width="50%" color="green">Save</v-btn>
-                    <v-btn @click="closeOverlay" width="50%">Cancel</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-col>
-    </v-row>
+    <div class="row justify-content-center manage-category-wrapper">
+        <div class="col-11 col-lg-4 bg-white shadow-lg">
+            <h3>Manage Category</h3>
+            <div class="row no-gutters mb-5">
+                <div class="col-12 col-lg-8">
+                    <v-text-field
+                        class="mr-lg-4"
+                        v-model="newCategory"
+                        label="New Category"
+                        dense
+                        clearable
+                        :rules="rules"
+                        ></v-text-field>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <v-btn
+                        width="100%"
+                        color="success"
+                        :disabled="!valid"
+                        @click="add">Add</v-btn>
+                </div>
+            </div>
+
+            <div v-for="(category,index) in dataCopy" :key="index" class="shadow-lg mb-3 d-flex">
+                <div class="flex-fill">
+                    <p>{{index + 1}}&nbsp;&nbsp;{{category}}</p>
+                </div>
+                <div class="flex-fill d-inline-flex justify-content-end">
+                    <v-btn
+                    class="mr-2"
+                    :disabled="index===0"
+                    @click="move(index, -1)"><v-icon>mdi-chevron-up</v-icon></v-btn>
+                    <v-btn
+                        class="mr-2"
+                        :disabled="index===dataCopy.length-1"
+                        @click="move(index, 1)"><v-icon>mdi-chevron-down</v-icon></v-btn>
+                    <v-btn color="red" @click="deleteCategory(category)"><v-icon>mdi-trash-can-outline</v-icon></v-btn>
+                </div>
+            </div>
+            <v-btn @click="submit" width="50%" color="green">Save</v-btn>
+            <v-btn @click="closeOverlay" width="50%">Cancel</v-btn>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -92,17 +89,19 @@ export default {
             }
         },
         deleteCategory(category) {
-            axios
-                .delete(path.menus.categories, {
-                    params: { id: this.menuId, category: category }
-                })
-                .then((response) => {
-                    this.$emit('refreshData');
-                    this.$alertify.success('Successfully deleted');
-                })
-                .catch((error) => {
-                    this.$alertify.error(error.response.data.message);
-                });
+            this.$alertify.confirm('Deleting item', () => {
+                axios
+                    .delete(path.menus.categories, {
+                        params: { id: this.menuId, category: category }
+                    })
+                    .then((response) => {
+                        this.$emit('refreshData');
+                        this.$alertify.success('Successfully deleted');
+                    })
+                    .catch((error) => {
+                        this.$alertify.error(error.response.data.message);
+                    });
+            });
         },
         closeOverlay() {
             this.$emit('closeOverlay');
@@ -154,5 +153,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.manage-category-wrapper {
+    width: 100vw !important;
+}
 </style>

@@ -28,18 +28,6 @@ export class MenusController
         this.menusService.update(updateMenuDto);
     }
 
-    @Delete(':id')
-    async delete(@Param('id') id: string): Promise<void>
-    {
-        this.menusService.delete(id);
-    }
-
-    @Get(':id')
-    async findOne(@Param('id') id: string): Promise<Menu>
-    {
-        return this.menusService.findOne(id);
-    }
-
     @Delete('categories')
     async deleteCategory(@Query('id') id: string, @Query('category') category: string): Promise<void>
     {
@@ -50,5 +38,17 @@ export class MenusController
     async updateCategories(@Body() data: UpdateMenuCategoriesDto): Promise<void>
     {
         this.menusService.updateCategories(data);
+    }
+
+    @Delete(':id')
+    async delete(@Param('id') id: string): Promise<void>
+    {
+        this.menusService.delete(id);
+    }
+
+    @Get(':id')
+    async findOne(@Param('id') id: string): Promise<Menu>
+    {
+        return this.menusService.findOne(id);
     }
 }
