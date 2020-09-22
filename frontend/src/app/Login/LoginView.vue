@@ -36,6 +36,7 @@
                     block
                     color="info"
                     class="mt-5"
+                    :to="{ name: 'RegisterView' }"
                 >Register</v-btn>
                 <a href="#" @click="changeResetState(true)" class="d-inline-block mt-5">Reset Password</a>
             </div>
@@ -79,9 +80,10 @@ export default {
                     axios
                         .post(path.accounts.login, this.account)
                         .then((response) => {
-                            this.$root.user = response.data.user;
-                            axios.defaults.headers.common.Authorization = `Bearer ${response.data.access_token}`;
+                            sessionStorage.user = JSON.stringify(response.data.user);
+                            sessionStorage.token = response.data.access_token;
                             this.$alertify.success('Logged in');
+                            this.$router.push({ name: 'MenuListView' });
                         })
                         .catch((error) => { this.handleError(error); });
                 }
@@ -89,7 +91,7 @@ export default {
                 this.$alertify.error('Validation error, please rectify fields');
             }
         },
-        handleError(error, err401) {
+        handleError(error) {
             switch (error.response.status) {
             case 400:
                 this.$alertify.error(error.response.data.message[0]);

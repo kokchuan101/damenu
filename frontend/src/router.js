@@ -15,12 +15,17 @@ const routes = [
         component: () => import(/* webpackChunkName: "RegisterView" */ '@/app/Register/RegisterView.vue')
     },
     {
-        path: '/admin',
+        path: '/menu',
+        name: 'MenuListView',
+        component: () => import(/* webpackChunkName: "RegisterView" */ '@/app/MenuList/MenuListView.vue')
+    },
+    {
+        path: '/menu/:id',
         name: 'MenuViewEditable',
         component: () => import(/* webpackChunkName: "MenuEditable" */ '@/app/MenuEditable/MenuView.vue')
     },
     {
-        path: '/menu/:id',
+        path: '/view/menu/:id',
         name: 'MenuViewReadonly',
         component: () => import(/* webpackChunkName: "MenuReadonly" */ '@/app/MenuReadonly/MenuView.vue')
     }

@@ -4,6 +4,7 @@ import router from './router';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import vuetify from './plugins/vuetify';
 import VueAlertify from 'vue-alertify';
+import axios from 'axios';
 
 Vue.config.productionTip = false;
 Vue.use(VueAlertify, {
@@ -13,8 +14,19 @@ Vue.use(VueAlertify, {
     }
 });
 
+axios.interceptors.request.use((config) => {
+    if (localStorage.token) {
+        config.headers.common.Authorization = `Bearer ${localStorage.token}`;
+    }
+
+    return config;
+});
+
 new Vue({
     router,
     vuetify,
-    render: h => h(App)
+    render: h => h(App),
+    data: {
+        user: undefined
+    }
 }).$mount('#app');
