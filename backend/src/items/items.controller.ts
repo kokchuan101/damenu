@@ -1,11 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseGuards } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { Item } from './schema/item.schema';
 import { CreateItemDto } from './dto/createItem.dto';
 import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/file.interceptor';
 import { UseInterceptors } from '@nestjs/common/decorators/core/use-interceptors.decorator';
 import { UpdateItemDto } from './dto/updateItem.dto';
+import { JwtAuthGuard } from 'src/auth/guard/jwtAuth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('items')
 export class ItemsController
 {
