@@ -1,83 +1,88 @@
 <template>
-    <div class="item-card">
-        <v-form v-model="valid" ref="form" @submit.prevent="handleSubmit" class="row no-gutters">
-            <div class="col-4 col-lg-2">
+    <div class="item-card shadow mb-2">
+        <v-form v-model="valid" ref="form" @submit.prevent="handleSubmit" class="row no-gutters pr-2">
+            <div class="col-12 col-lg-2 d-flex justify-content-center my-2">
                 <input type="hidden" name="menuId" :value="dataCopy.menuId" />
-                <img class="item-img" :src="imgUrl" />
-                <v-file-input v-if="isEdit||isCreate" name="img" @change="previewImg"></v-file-input>
-            </div>
-            <div class="col-8 col-lg-10 row">
-                <div class="col-12 col-lg-4">
-                    <v-text-field
-                        name="code"
-                        class="item-code"
-                        v-model.trim="dataCopy.code"
-                        label="Code"
-                        counter="4"
-                        :rules="isEdit||isCreate ?rules.code: []"
-                        :hide-details="!(isEdit||isCreate)"
-                        :filled="!(isEdit||isCreate)"
-                        :readonly="!(isEdit||isCreate)"
-                        :clearable="isEdit||isCreate"
-                    ></v-text-field>
-                    <v-text-field
-                        name="name"
-                        class="item-name"
-                        v-model.trim="dataCopy.name"
-                        label="Name"
-                        :rules="isEdit||isCreate ?rules.name: []"
-                        :filled="!(isEdit||isCreate)"
-                        :readonly="!(isEdit||isCreate)"
-                        :clearable="isEdit||isCreate"
-                    ></v-text-field>
-                </div>
-                <div class="col-12 col-lg-3">
-                    <v-autocomplete
-                        class="item-category"
-                        v-model.trim="dataCopy.category"
-                        :items="categories"
-                        label="Category"
-                        :rules="isEdit||isCreate ?rules.category: []"
-                        :filled="!(isEdit||isCreate)"
-                        :readonly="!(isEdit||isCreate)"
-                        :clearable="isEdit||isCreate"
-                    ></v-autocomplete>
-                    <v-text-field
-                        name="price"
-                        class="item-price"
-                        v-model="dataCopy.price"
-                        @blur="formatPrice"
-                        label="Price"
-                        :rules="isEdit||isCreate ?rules.price: []"
-                        :filled="!(isEdit||isCreate)"
-                        :readonly="!(isEdit||isCreate)"
-                        :clearable="isEdit||isCreate"
-                        prefix="RM"
-                        type="number"
-                        step=".01"
-                    ></v-text-field>
-                </div>
-                <div class="col-12 col-lg-5">
-                    <v-textarea
-                        name="description"
-                        label="Description"
-                        v-model.trim="dataCopy.description"
-                        :rules="isEdit||isCreate ?rules.description: []"
-                        :filled="!(isEdit||isCreate)"
-                        :readonly="!(isEdit||isCreate)"
-                        :clearable="isEdit||isCreate"
-                    ></v-textarea>
+                <div>
+                    <img class="item-img" :src="imgUrl" />
+                    <v-file-input v-if="isEdit||isCreate" name="img" @change="previewImg"></v-file-input>
                 </div>
             </div>
-            <div class="col-12">
-                <div v-if="isEdit||isCreate" class="float-right">
-                    <v-btn color="success" type="submit" key="submit">Save</v-btn>
+            <div class="col-12 col-lg-3 px-2 pt-lg-2 mb-2">
+                <v-text-field
+                    name="code"
+                    class="item-code mb-2"
+                    v-model.trim="dataCopy.code"
+                    label="Code"
+                    counter="4"
+                    :rules="isEdit||isCreate ?rules.code: []"
+                    :hide-details="!(isEdit||isCreate)"
+                    :filled="!(isEdit||isCreate)"
+                    :readonly="!(isEdit||isCreate)"
+                    :clearable="isEdit||isCreate"
+                ></v-text-field>
+                <v-text-field
+                    name="name"
+                    class="item-name"
+                    v-model.trim="dataCopy.name"
+                    label="Name"
+                    :rules="isEdit||isCreate ?rules.name: []"
+                    :hide-details="!(isEdit||isCreate)"
+                    :filled="!(isEdit||isCreate)"
+                    :readonly="!(isEdit||isCreate)"
+                    :clearable="isEdit||isCreate"
+                ></v-text-field>
+            </div>
+            <div class="col-12 col-lg-2 px-2 pt-lg-2 mb-2">
+                <v-autocomplete
+                    class="mb-2"
+                    v-model.trim="dataCopy.category"
+                    :items="categories"
+                    label="Category"
+                    :rules="isEdit||isCreate ?rules.category: []"
+                    :hide-details="!(isEdit||isCreate)"
+                    :filled="!(isEdit||isCreate)"
+                    :readonly="!(isEdit||isCreate)"
+                    :clearable="isEdit||isCreate"
+                ></v-autocomplete>
+                <v-text-field
+                    name="price"
+                    class="mb-2"
+                    v-model="dataCopy.price"
+                    @blur="formatPrice"
+                    label="Price"
+                    :rules="isEdit||isCreate ?rules.price: []"
+                    :hide-details="!(isEdit||isCreate)"
+                    :filled="!(isEdit||isCreate)"
+                    :readonly="!(isEdit||isCreate)"
+                    :clearable="isEdit||isCreate"
+                    prefix="RM"
+                    type="number"
+                    step=".01"
+                ></v-text-field>
+            </div>
+            <div class="col-12 col-lg-5 px-2 pt-lg-2 mb-2">
+                <v-textarea
+                    name="description"
+                    label="Description"
+                    v-model.trim="dataCopy.description"
+                    :rules="isEdit||isCreate ?rules.description: []"
+                    :hide-details="!(isEdit||isCreate)"
+                    :filled="!(isEdit||isCreate)"
+                    :readonly="!(isEdit||isCreate)"
+                    :clearable="isEdit||isCreate"
+                ></v-textarea>
+            </div>
+            <div v-if="isEdit||isCreate" class="col-12 d-flex justify-content-end px-2 mb-2 control-buttons">
+                    <v-btn color="success"
+                        class="mr-lg-2"
+                        type="submit"
+                        key="submit">Save</v-btn>
                     <v-btn @click="onCancel" key="cancel">Cancel</v-btn>
-                </div>
-                <div v-else class="float-right">
-                    <v-btn color="info" @click="isEdit=true">Edit</v-btn>
-                    <v-btn color="error" @click="onDelete">Delete</v-btn>
-                </div>
+            </div>
+            <div v-else class="col-12 d-flex justify-content-end px-2 mb-2 control-buttons">
+                <v-btn color="info" class="mr-lg-2" @click="isEdit=true">Edit</v-btn>
+                <v-btn color="error" @click="onDelete">Delete</v-btn>
             </div>
         </v-form>
     </div>
@@ -227,20 +232,22 @@ export default {
 </script>
 
 <style scoped>
-.item-img {
-    max-height: 90%;
-    max-width: 90%;
-}
-
 .item-card {
-    background-color: aliceblue;
-    border-bottom: 2px black solid;
+    background-color: white;
 }
 
-@media screen and (max-width: 959px) {
+@media screen and (max-width: 991px) {
+    .item-img {
+        height: 150px;
+        width: 100%;
+    }
+
+    .control-buttons button {
+        width: 50%;
+    }
 }
 
-@media screen and (min-width: 960px) {
+@media screen and (min-width: 992px) {
     .item-code {
         width: 30%;
         display: inline-block;
@@ -250,6 +257,11 @@ export default {
     .item-name {
         width: 60%;
         display: inline-block;
+    }
+
+    .item-img {
+        height: 180px;
+        width: 100%;
     }
 }
 </style>
