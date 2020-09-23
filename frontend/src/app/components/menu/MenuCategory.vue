@@ -6,7 +6,7 @@
             v-slot:default="{ active, toggle }">
                 <v-btn
                     :input-value="active"
-                    active-class="purple lighten-2 white--text"
+                    active-class="deep-purple lighten-2 white--text"
                     :disabled="isCreate"
                     @click="changeList(category);toggle();"
                     ref="toggle"

@@ -35,7 +35,7 @@
                 <div v-if="!isCreate" :class="hover? 'col-lg-4': ''" class="col-2 col-lg-2">
                     <v-btn
                         @click="$router.push({ name: 'MenuViewEditable', params: { id: dataCopy._id}})"
-                        :color=" hover ? 'green accent-4' : 'green darken-1'"
+                        :color=" hover ? 'deep-purple darken-2' : 'deep-purple lighten-2'"
                         class="w-100 h-100">
                         <v-icon x-large>mdi-chevron-right</v-icon>
                     </v-btn>

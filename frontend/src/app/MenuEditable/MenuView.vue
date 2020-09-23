@@ -1,25 +1,6 @@
 <template>
-    <div class=row>
+    <div class="row px-lg-4">
         <div class="col-12">
-            <MenuCategory
-                :categories="menu.categories"
-                :isCreate="isCreate"
-                ref="MenuCategory"
-                @changeList="changeList">
-            </MenuCategory>
-        </div>
-
-        <div class="col-12">
-            <v-btn
-                color="success"
-                @click="createItem"
-                :disabled="isCreate"
-            >Add</v-btn>
-            <v-btn
-                color="info"
-                :disabled="isCreate"
-                @click="overlay.category = true"
-            >Manage Category</v-btn>
             <v-btn
                 @click="preview">
                 Preview Menu
@@ -28,6 +9,32 @@
                 @click="generateQr">
                 Generate QR Code
             </v-btn>
+        </div>
+
+        <div class="col-12">
+            <v-btn
+                color="deep-purple darken-2 white--text"
+                class="d-block"
+                :disabled="isCreate"
+                @click="overlay.category = true"
+            >Manage Category</v-btn>
+            <div class="p-1 shadow" style="background: #D1C4E9">
+                <MenuCategory
+                    :categories="menu.categories"
+                    :isCreate="isCreate"
+                    ref="MenuCategory"
+                    @changeList="changeList">
+                </MenuCategory>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <v-btn
+                block
+                color="success"
+                @click="createItem"
+                :disabled="isCreate"
+            >Add</v-btn>
             <ItemDetail
                 v-if="newItem"
                 :item="newItem"
