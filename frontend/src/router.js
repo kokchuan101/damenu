@@ -3,16 +3,26 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
+const hasLoggedIn = (to, from, next) => {
+    if (sessionStorage.user) {
+        next({ name: 'MenuListView' });
+    } else {
+        next();
+    }
+};
+
 const routes = [
     {
         path: '/',
         name: 'LoginView',
-        component: () => import(/* webpackChunkName: "MenuEditable" */ '@/app/Login/LoginView.vue')
+        component: () => import(/* webpackChunkName: "MenuEditable" */ '@/app/Login/LoginView.vue'),
+        beforeEnter: hasLoggedIn
     },
     {
         path: '/register',
         name: 'RegisterView',
-        component: () => import(/* webpackChunkName: "RegisterView" */ '@/app/Register/RegisterView.vue')
+        component: () => import(/* webpackChunkName: "RegisterView" */ '@/app/Register/RegisterView.vue'),
+        beforeEnter: hasLoggedIn
     },
     {
         path: '/menu',

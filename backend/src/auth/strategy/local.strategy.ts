@@ -16,7 +16,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         const account: Account = await this.authService.validateUser(email, password);
         if (!account)
         {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException('Invalid credentials');
         }
 
         account.password = 'nopeknotsee';

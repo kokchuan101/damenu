@@ -14,19 +14,30 @@ Vue.use(VueAlertify, {
     }
 });
 
-axios.interceptors.request.use((config) => {
-    if (localStorage.token) {
-        config.headers.common.Authorization = `Bearer ${localStorage.token}`;
-    }
-
-    return config;
-});
-
 new Vue({
     router,
     vuetify,
     render: h => h(App),
-    data: {
-        user: undefined
+    created() {
+        axios.interceptors.request.use((config) => {
+            if (sessionStorage.token) {
+                config.headers.common.Authorization = `Bearer ${sessionStorage.token}`;
+            }
+
+            return config;
+        });
+
+        axios.interceptors.response.use((response) => {
+            return response;
+        }, (error) => {
+            if (error.response.status === 401) {
+                if (error.response.data.message === 'Invalid token') {
+                    this.$alertify.error('Session has expired. Redirecting to login page');
+                    sessionStorage.clear();
+                    this.$router.push({ name: 'LoginView' });
+                }
+            }
+            return Promise.reject(error);
+        });
     }
 }).$mount('#app');
