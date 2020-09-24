@@ -30,6 +30,7 @@
                 color="info"
                 class="mt-2"
                 type="submit"
+                :loading="loading"
             >Register</v-btn>
         </v-form>
     </div>
@@ -55,12 +56,14 @@ export default {
                 email: [this.required('Email'), this.email()],
                 password: [this.required('Password')]
             },
-            valid: false
+            valid: false,
+            loading: false
         };
     },
     methods: {
         handleSubmit() {
             if (this.$refs.form.validate()) {
+                this.loading = true;
                 axios
                     .post(path.accounts.index, this.account)
                     .then((response) => {
@@ -69,6 +72,9 @@ export default {
                     })
                     .catch((error) => {
                         this.axiosErrorHandler(error);
+                    })
+                    .then(() => {
+                        this.loading = false;
                     });
             } else {
                 this.$alertify.error('Validation error, please rectify fields');

@@ -21,12 +21,25 @@
                     <p>Restaurant Name:&nbsp;<span>{{ menu.restaurantName }}</span></p>
                 </div>
                 <div v-if="isEdit||isCreate" class="d-flex justify-content-end control-buttons">
-                    <v-btn color="success" type="submit" key="submit" >Save</v-btn>
-                    <v-btn @click="onCancel" key="cancel" >Cancel</v-btn>
+                    <v-btn
+                        color="success"
+                        type="submit"
+                        key="submit"
+                        :loading="loading">Save</v-btn>
+                    <v-btn
+                        @click="onCancel"
+                        key="cancel"
+                        :disabled="loading">Cancel</v-btn>
                 </div>
                 <div v-else class="d-flex justify-content-end control-buttons">
-                    <v-btn color="info" @click="isEdit=true" >Edit</v-btn>
-                    <v-btn color="error" @click="onDelete" >Delete</v-btn>
+                    <v-btn
+                        color="info"
+                        @click="isEdit=true"
+                        :disabled="loading">Edit</v-btn>
+                    <v-btn
+                        color="error"
+                        @click="onDelete"
+                        :loading="loading">Delete</v-btn>
                 </div>
             </v-form>
             <v-hover
@@ -75,7 +88,8 @@ export default {
                 name: [this.required('Name')],
                 restaurantName: [this.required('Restaurant Name')]
             },
-            dataCopy: {}
+            dataCopy: {},
+            loading: false
         };
     },
     methods: {
@@ -90,6 +104,7 @@ export default {
         },
         onDelete() {
             this.$alertify.confirm('Deleting item', () => {
+                this.loading = true;
                 axios
                     .delete(path.menus.index + `/${this.dataCopy._id}`)
                     .then((response) => {
@@ -98,6 +113,9 @@ export default {
                     })
                     .catch((error) => {
                         this.axiosErrorHandler(error);
+                    })
+                    .then(() => {
+                        this.loading = false;
                     });
             });
         },
@@ -113,6 +131,7 @@ export default {
                         );
                     } else {
                         this.dataCopy.id = this.dataCopy._id;
+                        this.loading = true;
                         axios
                             .patch(path.menus.index, this.dataCopy)
                             .then((response) => {
@@ -122,10 +141,14 @@ export default {
                             })
                             .catch((error) => {
                                 this.axiosErrorHandler(error);
+                            })
+                            .then(() => {
+                                this.loading = false;
                             });
                     }
                 } else {
                     this.dataCopy.accountId = JSON.parse(sessionStorage.user)._id;
+                    this.loading = true;
                     axios
                         .post(path.menus.index, this.dataCopy)
                         .then((response) => {
@@ -134,6 +157,9 @@ export default {
                         })
                         .catch((error) => {
                             this.axiosErrorHandler(error);
+                        })
+                        .then(() => {
+                            this.loading = false;
                         });
                 }
             } else {
