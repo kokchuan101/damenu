@@ -77,12 +77,23 @@
                     <v-btn color="success"
                         class="mr-lg-2"
                         type="submit"
-                        key="submit">Save</v-btn>
-                    <v-btn @click="onCancel" key="cancel">Cancel</v-btn>
+                        key="submit"
+                        :loading="loading">Save</v-btn>
+                    <v-btn
+                        @click="onCancel"
+                        key="cancel"
+                        :disabled="loading">Cancel</v-btn>
             </div>
             <div v-else class="col-12 d-flex justify-content-end px-2 mb-2 control-buttons">
-                <v-btn color="info" class="mr-lg-2" @click="isEdit=true">Edit</v-btn>
-                <v-btn color="error" @click="onDelete">Delete</v-btn>
+                <v-btn
+                    color="info"
+                    class="mr-lg-2"
+                    @click="isEdit=true"
+                    :disabled="loading">Edit</v-btn>
+                <v-btn
+                    color="error"
+                    @click="onDelete"
+                    :loading="loading">Delete</v-btn>
             </div>
         </v-form>
     </div>
@@ -121,7 +132,8 @@ export default {
                 name: [this.required('Name')],
                 category: [this.required('Category')],
                 price: [this.required('Price'), this.numeric('Price')]
-            }
+            },
+            loading: false
         };
     },
     created() {
@@ -154,6 +166,7 @@ export default {
                 form.append('category', this.dataCopy.category);
 
                 if (this.isCreate) {
+                    this.loading = true;
                     axios
                         .post(path.items.index, form)
                         .then((response) => {
@@ -161,7 +174,10 @@ export default {
                             this.$emit('refreshData', this.item.category, true);
                         })
                         .catch((error) => {
-                            this.axiosErrorHandlre(error);
+                            this.axiosErrorHandler(error);
+                        })
+                        .then(() => {
+                            this.loading = false;
                         });
                 } else {
                     form.append('id', this.dataCopy._id);
@@ -174,6 +190,7 @@ export default {
                             'Unable to update, no change detected.'
                         );
                     } else {
+                        this.loading = true;
                         axios
                             .patch(path.items.index, form)
                             .then((response) => {
@@ -181,7 +198,10 @@ export default {
                                 this.refreshData();
                             })
                             .catch((error) => {
-                                this.axiosErrorHandlre(error);
+                                this.axiosErrorHandler(error);
+                            })
+                            .then(() => {
+                                this.loading = false;
                             });
                     }
                 }
@@ -205,6 +225,7 @@ export default {
         },
         onDelete() {
             this.$alertify.confirm('Deleting item', () => {
+                this.loading = true;
                 axios
                     .delete(path.items.index + `/${this.dataCopy._id}`)
                     .then((response) => {
@@ -212,7 +233,10 @@ export default {
                         this.refreshData();
                     })
                     .catch((error) => {
-                        this.axiosErrorHandlre(error);
+                        this.axiosErrorHandler(error);
+                    })
+                    .then(() => {
+                        this.loading = false;
                     });
             });
         },

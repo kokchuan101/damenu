@@ -22,6 +22,7 @@
                     color="info"
                     class="mt-5"
                     type="submit"
+                    :loading="loading"
                 >Reset Password</v-btn>
                 <a href="#" @click="changeResetState(false)" class="d-inline-block mt-5">Back to Login</a>
             </div>
@@ -31,6 +32,7 @@
                     color="success"
                     class="mt-2"
                     type="submit"
+                    :loading="loading"
                 >Login</v-btn>
                 <v-btn
                     block
@@ -63,13 +65,15 @@ export default {
                 password: ''
             },
             valid: false,
-            isReset: false
+            isReset: false,
+            loading: false
         };
     },
     methods: {
         handleSubmit() {
             if (this.$refs.form.validate()) {
                 if (this.isReset) {
+                    this.loading = true;
                     axios
                         .post(path.accounts.resetPassword, this.account)
                         .then((response) => {
@@ -78,8 +82,12 @@ export default {
                         })
                         .catch((error) => {
                             this.axiosErrorHandler(error);
+                        })
+                        .then(() => {
+                            this.loading = false;
                         });
                 } else {
+                    this.loading = true;
                     axios
                         .post(path.accounts.login, this.account)
                         .then((response) => {
@@ -90,6 +98,9 @@ export default {
                         })
                         .catch((error) => {
                             this.axiosErrorHandler(error, 'Invalid email or password');
+                        })
+                        .then(() => {
+                            this.loading = false;
                         });
                 }
             } else {

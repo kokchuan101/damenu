@@ -17,7 +17,7 @@
                     <v-btn
                         width="100%"
                         color="success"
-                        :disabled="!valid"
+                        :disabled="!valid||loading"
                         @click="add">Add</v-btn>
                 </div>
             </div>
@@ -29,17 +29,27 @@
                 <div class="flex-fill d-inline-flex justify-content-end">
                     <v-btn
                     class="mr-2"
-                    :disabled="index===0"
+                    :disabled="index===0||loading"
                     @click="move(index, -1)"><v-icon>mdi-chevron-up</v-icon></v-btn>
                     <v-btn
                         class="mr-2"
-                        :disabled="index===dataCopy.length-1"
+                        :disabled="index===dataCopy.length-1||loading"
                         @click="move(index, 1)"><v-icon>mdi-chevron-down</v-icon></v-btn>
-                    <v-btn color="red" @click="deleteCategory(category)"><v-icon>mdi-trash-can-outline</v-icon></v-btn>
+                    <v-btn
+                    color="red"
+                    @click="deleteCategory(category)"
+                    :disabled="loading"><v-icon>mdi-trash-can-outline</v-icon></v-btn>
                 </div>
             </div>
-            <v-btn @click="submit" width="50%" color="green">Save</v-btn>
-            <v-btn @click="closeOverlay" width="50%">Cancel</v-btn>
+            <v-btn
+                @click="submit"
+                width="50%"
+                color="green"
+                :loading="loading">Save</v-btn>
+            <v-btn
+                @click="closeOverlay"
+                width="50%"
+                :disabled="loading">Cancel</v-btn>
         </div>
     </div>
 </template>
@@ -72,7 +82,8 @@ export default {
                 (v) => {
                     return !this.dataCopy.includes(v) || 'No duplicate value';
                 }
-            ]
+            ],
+            loading: false
         };
     },
     created() {
@@ -120,6 +131,7 @@ export default {
                     categories: this.dataCopy
                 };
 
+                this.loading = true;
                 axios
                     .patch(path.menus.categories, patchData)
                     .then((response) => {
@@ -128,6 +140,9 @@ export default {
                     })
                     .catch((error) => {
                         this.axiosErrorHandler(error);
+                    })
+                    .then(() => {
+                        this.loading = false;
                     });
             }
         }
