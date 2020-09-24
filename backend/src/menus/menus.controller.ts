@@ -36,7 +36,7 @@ export class MenusController
     @UseGuards(JwtAuthGuard)
     async deleteCategory(@Query('id') id: string, @Query('category') category: string): Promise<void>
     {
-        this.menusService.deleteCategory(id, category);
+        await this.menusService.deleteCategory(id, category);
     }
 
     @Patch('categories')

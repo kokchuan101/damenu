@@ -18,6 +18,9 @@ export class Menu extends Document
     items: Item[];
 
     @Prop()
+    accountId: string;
+
+    @Prop()
     // eslint-disable-next-line @typescript-eslint/ban-types
     sortedItems: object;
 }

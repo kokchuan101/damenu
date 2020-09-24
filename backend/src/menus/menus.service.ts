@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/typedef */
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -9,6 +10,7 @@ import * as path from 'path';
 import { CreateMenuDto } from './dto/createMenu.dto';
 import { UpdateMenuDto } from './dto/updateMenu.dto';
 import { Account } from 'src/accounts/schema/account.schema';
+import { promises } from 'dns';
 
 @Injectable()
 export class MenusService
@@ -25,26 +27,104 @@ export class MenusService
         return account.menus;
     }
 
-    async create(createMenuDto: CreateMenuDto): Promise<void>
+    async create(createMenuDto: CreateMenuDto): Promise<Account>
     {
-        const { userId, ...result }: { userId: string; } = createMenuDto;
-
-        const createdMenu: Menu = new this.menuModel(result);
+        const createdMenu: Menu = new this.menuModel(createMenuDto);
         const menu: Menu = await createdMenu.save();
 
-        this.accountModel.findByIdAndUpdate(userId, { '$push': { 'menus': menu.id } }).exec();
+        return this.accountModel.findByIdAndUpdate(menu.accountId, { '$push': { 'menus': menu.id } }).exec();
     }
 
     async update(updateMenuDto: UpdateMenuDto): Promise<void>
     {
         const { id, ...result }: { id: string; } = updateMenuDto;
-        this.menuModel.updateOne({ '_id': id }, result).exec();
+        return this.menuModel.updateOne({ '_id': id }, result).exec();
     }
 
-    async delete(id: string): Promise<void>
+    async delete(id: string): Promise<any>
     {
-        this.menuModel.findByIdAndDelete(id).exec();
+        const menu: Menu = await this.menuModel.findByIdAndDelete(id).exec();
+
+        const itemId: string[] = menu.items.reduce((acc: string[], item: Item) =>
+        {
+            return acc.concat([item._id]);
+        }, []);
+
+        const deleteFromAccount: Promise<Account> = this.accountModel.findByIdAndUpdate(menu.accountId, { '$pull': { 'menus': menu.id  } }).exec();
+
+        const deleteItems: Promise<any> = this.deleteItems(itemId);
+
+        return Promise.all([deleteFromAccount, deleteItems]);
     }
+
+    async findOne(id: string): Promise<Menu>
+    {
+        const menu: Menu = await this.menuModel.findById(id)
+            .populate({ path: 'items', options: { sort: { 'code': 1 } } })
+            .exec();
+
+        menu.sortedItems = this.transformMenuItems(menu);
+
+        return menu;
+    }
+
+    async deleteCategory(id: string, category: string): Promise<any>
+    {
+        const menu: Menu = await this.menuModel.findById(id)
+            .select({ 'items': 1, 'categories': 1 })
+            .populate(
+                {
+                    path: 'items',
+                    select: '_id',
+                    match: { 'category': category }
+                })
+            .exec();
+
+        const itemId: string[] = menu.items.reduce((acc: string[], item: Item) =>
+        {
+            return acc.concat([item._id]);
+        }, []);
+
+        await this.deleteItems(itemId);
+
+        //remove item ref and category from menu
+        return menu.updateOne({
+            '$pull':
+                { 'categories': category, 'items': { '$in': itemId } }
+        }).exec();
+    }
+
+    async updateCategories(data: UpdateMenuCategoriesDto): Promise<void>
+    {
+        const id: string = data.id;
+        delete data.id;
+
+        this.menuModel.updateOne(
+            { '_id': id },
+            { 'categories': data.categories }
+        ).exec();
+    }
+
+    async deleteItems(itemId: string[]): Promise<any>
+    {
+        const items: Item[] = await this.itemModel.find({ '_id': { '$in': itemId } })
+            .select('img')
+            .exec();
+
+        items.forEach((item: Item) =>
+        {
+            //remove all associated file
+            if (item.img)
+            {
+                const filename: string = path.join(process.cwd(), 'public') + item.img;
+                fs.promises.unlink(filename);
+            }
+        });
+
+        //delete all associated item
+        return this.itemModel.deleteMany({ '_id': { '$in': itemId } }).exec();
+    }
+
     // eslint-disable-next-line @typescript-eslint/ban-types
     transformMenuItems(menu: Menu): object
     {
@@ -64,83 +144,11 @@ export class MenusService
             });
 
             // remove filtered element
-            indexs.forEach((index: number) => itemsCopy.splice(index, 1));
+            indexs.reverse().forEach((index: number) => itemsCopy.splice(index, 1));
 
             sortedItem[category] = filterItem;
         }
 
         return sortedItem;
-    }
-
-    async findOne(id: string): Promise<Menu>
-    {
-        const menuPromise: Promise<Menu> = this.menuModel.findById(id)
-            .populate({ path: 'items', options: { sort: { 'code': 1 } } })
-            .exec();
-
-        menuPromise.then(
-            (menu: Menu) =>
-            {
-                menu.sortedItems = this.transformMenuItems(menu);
-            }
-        );
-
-        return menuPromise;
-    }
-
-    async deleteCategory(id: string, category: string): Promise<void>
-    {
-        this.menuModel.findById(id)
-            .select({ 'items': 1, 'categories': 1 })
-            .populate(
-                {
-                    path: 'items',
-                    select: '_id',
-                    match: { 'category': category }
-                })
-            .exec()
-            .then((menu: Menu) =>
-            {
-                const itemId: string[] = menu.items.reduce((acc: string[], item: Item) =>
-                {
-                    return acc.concat([item._id]);
-                }, []);
-
-                this.itemModel.find({ '_id': { '$in': itemId } })
-                    .select('img')
-                    .exec()
-                    .then((items: Item[]) =>
-                    {
-                        items.forEach((item: Item) =>
-                        {
-                            //remove all associated file
-                            if (item.img)
-                            {
-                                const filename: string = path.join(process.cwd(), 'public') + item.img;
-                                fs.promises.unlink(filename);
-                            }
-                        });
-
-                        //delete all associated item
-                        this.itemModel.deleteMany({ '_id': { '$in': itemId } }).exec();
-                    });
-
-                //remove item ref and category from menu
-                menu.updateOne({
-                    '$pull':
-                        { 'categories': category, 'items': { '$in': itemId } }
-                }).exec();
-            });
-    }
-
-    async updateCategories(data: UpdateMenuCategoriesDto): Promise<void>
-    {
-        const id: string = data.id;
-        delete data.id;
-
-        this.menuModel.updateOne(
-            { '_id': id },
-            { 'categories': data.categories }
-        ).exec();
     }
 }
