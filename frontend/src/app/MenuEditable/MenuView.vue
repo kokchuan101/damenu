@@ -2,6 +2,12 @@
     <div class="row px-lg-4">
         <div class="col-12">
             <v-btn
+            fab
+            small
+            :to="{ name: 'MenuListView'}"
+            class="mr-2 text-decoration-none"><v-icon>mdi-chevron-left</v-icon></v-btn>
+            <v-btn
+                class="mr-2"
                 @click="preview">
                 Preview Menu
             </v-btn>
@@ -18,7 +24,7 @@
                 :disabled="isCreate"
                 @click="overlay.category = true"
             >Manage Category</v-btn>
-            <div class="p-1 shadow" style="background: #D1C4E9">
+            <div class="p-1 shadow" style="border-left: 4px solid #512DA8; border-bottom: 4px solid #512DA8">
                 <MenuCategory
                     :categories="menu.categories"
                     :isCreate="isCreate"
@@ -183,6 +189,9 @@ export default {
             link.download = 'qrcode.png';
             link.href = this.qrcode;
             link.click();
+        },
+        goBack() {
+            this.$router.push({ name: 'MenuViewEditable' });
         }
     }
 };
