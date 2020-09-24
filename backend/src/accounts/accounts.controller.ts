@@ -15,12 +15,12 @@ export class AccountsController
 
     @Post()
     async create(@Body() accountDto: CreateAccountDto): Promise<void> {
-        return this.accountService.create(accountDto);
+        await this.accountService.create(accountDto);
     }
 
     @Post('reset')
     async resetPassword(@Body() accountDto: LoginDto): Promise<void> {
-        return this.accountService.resetPassword(accountDto);
+        await this.accountService.resetPassword(accountDto);
     }
 
     @UseGuards(LocalAuthGuard)

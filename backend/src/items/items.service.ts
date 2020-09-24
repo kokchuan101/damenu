@@ -15,29 +15,29 @@ export class ItemsService
         @InjectModel(Item.name) private itemModel: Model<Item>,
         @InjectModel(Menu.name) private menuModel: Model<Menu>) { }
 
-    async create(item: CreateItemDto, file: Express.Multer.File): Promise<void>
+    async create(createItemDto: CreateItemDto, file: Express.Multer.File): Promise<any>
     {
-        const createdItem: Item = new this.itemModel(item);
+        const createdItem: Item = new this.itemModel(createItemDto);
 
-        const itemPromise: Promise<Item> = createdItem.save();
+        const item: Item = await createdItem.save();
 
-        itemPromise.then(async (item: Item) =>
+        const imgPromise: Array<Promise<any>> = [];
+        if (file)
         {
-            if (file)
-            {
-                const ext: string[] = file.mimetype.split('/');
-                item.img = `/img${item.id}.${ext[ext.length - 1]}`;
-                const filename: string = path.join(process.cwd(), 'public' + item.img);
+            const ext: string[] = file.mimetype.split('/');
+            item.img = `/img${item.id}.${ext[ext.length - 1]}`;
+            const filename: string = path.join(process.cwd(), 'public' + item.img);
 
-                fs.promises.writeFile(filename, file.buffer);
-            }
+            imgPromise.push(fs.promises.writeFile(filename, file.buffer));
+            imgPromise.push(item.save());
+        }
 
-            item.save();
-            this.menuModel.updateOne(
-                { _id: item.menuId },
-                { '$push': { 'items': item.id } }
-            ).exec();
-        });
+        const menuUpdate: Promise<any> = this.menuModel.updateOne(
+            { _id: item.menuId },
+            { '$push': { 'items': item.id } }
+        ).exec();
+
+        return Promise.all([...imgPromise, menuUpdate]);
     }
 
     async findAll(): Promise<Item[]>
@@ -45,34 +45,35 @@ export class ItemsService
         return this.itemModel.find().exec();
     }
 
-    async delete(id: string): Promise<void>
+    async delete(id: string): Promise<any>
     {
-        const itemPromise: Promise<Item> = this.itemModel.findByIdAndDelete(id).exec();
+        const item: Item = await this.itemModel.findByIdAndDelete(id).exec();
 
-        itemPromise.then((item: Item) =>
-        {
-            const filename: string = path.join(process.cwd(), 'public') + item.img;
-            fs.promises.unlink(filename);
-            this.menuModel.updateOne(
-                { id: item.menuId },
-                { '$pull': { 'items': item.id } }
-            ).exec();
-        });
+        const filename: string = path.join(process.cwd(), 'public') + item.img;
+        fs.promises.unlink(filename);
+
+        return this.menuModel.updateOne(
+            { id: item.menuId },
+            { '$pull': { 'items': item.id } }
+        ).exec();
     }
 
-    async update(item: UpdateItemDto, file: Express.Multer.File): Promise<void>
+    async update(item: UpdateItemDto, file: Express.Multer.File): Promise<any>
     {
+        let fileUpdate: Promise<any> = Promise.resolve();
         if (file)
         {
             const ext: string[] = file.mimetype.split('/');
             item.img = `/img${item.id}.${ext[ext.length - 1]}`;
             const filename: string = path.join(process.cwd(), 'public' + item.img);
 
-            fs.promises.writeFile(filename, file.buffer);
+            fileUpdate = fs.promises.writeFile(filename, file.buffer);
         }
 
         const { id, ...result }: { id: string; } = item;
 
-        this.itemModel.updateOne({ '_id': id }, result).exec();
+        const itemUpdate: Promise<any> = this.itemModel.updateOne({ '_id': id }, result).exec();
+
+        return Promise.all([itemUpdate, fileUpdate]);
     }
 }

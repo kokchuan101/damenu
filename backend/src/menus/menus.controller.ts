@@ -22,14 +22,14 @@ export class MenusController
     @UseGuards(JwtAuthGuard)
     async create(@Body() createMenuDto: CreateMenuDto): Promise<void>
     {
-        this.menusService.create(createMenuDto);
+        await this.menusService.create(createMenuDto);
     }
 
     @Patch()
     @UseGuards(JwtAuthGuard)
     async update(@Body() updateMenuDto: UpdateMenuDto): Promise<void>
     {
-        this.menusService.update(updateMenuDto);
+        await this.menusService.update(updateMenuDto);
     }
 
     @Delete('categories')
@@ -43,14 +43,14 @@ export class MenusController
     @UseGuards(JwtAuthGuard)
     async updateCategories(@Body() data: UpdateMenuCategoriesDto): Promise<void>
     {
-        this.menusService.updateCategories(data);
+        await this.menusService.updateCategories(data);
     }
 
     @Delete(':id')
     @UseGuards(JwtAuthGuard)
     async delete(@Param('id') id: string): Promise<void>
     {
-        this.menusService.delete(id);
+        await this.menusService.delete(id);
     }
 
     @Get(':id')
