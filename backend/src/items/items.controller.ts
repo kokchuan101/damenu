@@ -17,7 +17,7 @@ export class ItemsController
     @UseInterceptors(FileInterceptor('img'))
     async create(@UploadedFile() file: Express.Multer.File, @Body() item: CreateItemDto): Promise<void>
     {
-        this.itemsService.create(item, file);
+        await this.itemsService.create(item, file);
     }
 
     @Get()
@@ -29,14 +29,14 @@ export class ItemsController
     @Delete(':id')
     async delete(@Param('id') id: string): Promise<void>
     {
-        this.itemsService.delete(id);
+        await this.itemsService.delete(id);
     }
 
     @Patch()
     @UseInterceptors(FileInterceptor('img'))
     async update(@UploadedFile() file: Express.Multer.File, @Body() item: UpdateItemDto): Promise<void>
     {
-        this.itemsService.update(item, file);
+        await this.itemsService.update(item, file);
     }
 
 }

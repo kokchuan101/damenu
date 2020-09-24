@@ -16,7 +16,7 @@ export class AccountsService
         return this.accountModel.findOne({ 'email': email }).exec();
     }
 
-    async create(accountDto: CreateAccountDto): Promise<void>
+    async create(accountDto: CreateAccountDto): Promise<any>
     {
         const account: Account = await this.findOne(accountDto.email);
 
@@ -27,18 +27,18 @@ export class AccountsService
             account.name = accountDto.name;
             account.email = accountDto.email;
             account.password = await bcrypt.hash(accountDto.password, 5);
-            account.save();
+            return account.save();
         }
     }
 
-    async resetPassword(accountDto: LoginDto): Promise<void>
+    async resetPassword(accountDto: LoginDto): Promise<any>
     {
         const account: Account = await this.findOne(accountDto.email);
 
         if (account)
         {
             account.password = await bcrypt.hash(accountDto.password, 5);
-            account.save();
+            return account.save();
         } else
         {
             throw new BadRequestException(['Account not found']);

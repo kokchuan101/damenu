@@ -27,7 +27,7 @@ export class MenusService
         return account.menus;
     }
 
-    async create(createMenuDto: CreateMenuDto): Promise<Account>
+    async create(createMenuDto: CreateMenuDto): Promise<any>
     {
         const createdMenu: Menu = new this.menuModel(createMenuDto);
         const menu: Menu = await createdMenu.save();
@@ -35,7 +35,7 @@ export class MenusService
         return this.accountModel.findByIdAndUpdate(menu.accountId, { '$push': { 'menus': menu.id } }).exec();
     }
 
-    async update(updateMenuDto: UpdateMenuDto): Promise<void>
+    async update(updateMenuDto: UpdateMenuDto): Promise<any>
     {
         const { id, ...result }: { id: string; } = updateMenuDto;
         return this.menuModel.updateOne({ '_id': id }, result).exec();
@@ -94,12 +94,12 @@ export class MenusService
         }).exec();
     }
 
-    async updateCategories(data: UpdateMenuCategoriesDto): Promise<void>
+    async updateCategories(data: UpdateMenuCategoriesDto): Promise<any>
     {
         const id: string = data.id;
         delete data.id;
 
-        this.menuModel.updateOne(
+        return this.menuModel.updateOne(
             { '_id': id },
             { 'categories': data.categories }
         ).exec();
