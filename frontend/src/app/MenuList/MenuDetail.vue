@@ -126,7 +126,7 @@ export default {
                             });
                     }
                 } else {
-                    this.dataCopy.userId = JSON.parse(sessionStorage.user)._id;
+                    this.dataCopy.accountId = JSON.parse(sessionStorage.user)._id;
                     axios
                         .post(path.menus.index, this.dataCopy)
                         .then((response) => {

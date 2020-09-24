@@ -3,7 +3,7 @@ import { IsNotEmpty } from 'class-validator';
 export class CreateMenuDto
 {
     @IsNotEmpty()
-    userId: string;
+    accountId: string;
 
     @IsNotEmpty()
     name: string;
