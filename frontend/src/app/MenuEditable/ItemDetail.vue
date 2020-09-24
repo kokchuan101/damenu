@@ -132,8 +132,8 @@ export default {
             this.item.price = parseFloat(this.item.price).toFixed(2);
             this.dataCopy = { ...this.item };
 
-            if (this.dataCopy.img) {
-                this.imgUrl = assetUrl + this.dataCopy.img;
+            if (this.item.img) {
+                this.imgUrl = assetUrl + this.item.img;
             } else {
                 this.imgUrl = assetUrl + '/placeholder.png';
             }
@@ -195,6 +195,7 @@ export default {
         previewImg(file) {
             if (file) {
                 this.imgUrl = URL.createObjectURL(file);
+                this.dataCopy.img = this.imgUrl;
             }
         },
         onCancel() {

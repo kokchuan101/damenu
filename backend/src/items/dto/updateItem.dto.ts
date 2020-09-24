@@ -1,28 +1,8 @@
 import { IsDecimal, IsNotEmpty, MaxLength } from 'class-validator';
+import { CreateItemDto } from './createItem.dto';
 
-export class UpdateItemDto
+export class UpdateItemDto extends CreateItemDto
 {
     @IsNotEmpty()
     id: string;
-
-    @IsNotEmpty()
-    menuId: string;
-
-    img: string;
-
-    @IsNotEmpty()
-    @MaxLength(4)
-    code: string;
-
-    @IsNotEmpty()
-    name: string;
-
-    @IsNotEmpty()
-    category: string;
-
-    @IsNotEmpty()
-    @IsDecimal({ decimal_digits: '2,2' })
-    price: number;
-
-    description: string;
 }

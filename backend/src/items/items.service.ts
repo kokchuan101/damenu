@@ -62,9 +62,6 @@ export class ItemsService
 
     async update(item: UpdateItemDto, file: Express.Multer.File): Promise<void>
     {
-        const id: string = item.id;
-        delete item.id;
-
         if (file)
         {
             const ext: string[] = file.mimetype.split('/');
@@ -74,6 +71,8 @@ export class ItemsService
             fs.promises.writeFile(filename, file.buffer);
         }
 
-        this.itemModel.updateOne({ '_id': id }, item).exec();
+        const { id, ...result }: { id: string; } = item;
+
+        this.itemModel.updateOne({ '_id': id }, result).exec();
     }
 }
