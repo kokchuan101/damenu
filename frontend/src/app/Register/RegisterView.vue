@@ -32,6 +32,7 @@
                 type="submit"
                 :loading="loading"
             >Register</v-btn>
+            <router-link :to="{ name: 'LoginView'}" class="d-inline-block mt-5">Back to Login</router-link>
         </v-form>
     </div>
 </template>
