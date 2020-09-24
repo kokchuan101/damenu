@@ -5,7 +5,7 @@
                 <input type="hidden" name="menuId" :value="dataCopy.menuId" />
                 <div>
                     <img class="item-img" :src="imgUrl" />
-                    <v-file-input v-if="isEdit||isCreate" name="img" @change="previewImg"></v-file-input>
+                    <v-file-input v-if="isEdit||isCreate" name="img" @change="previewImg" @click:clear="clearImg"></v-file-input>
                 </div>
             </div>
             <div class="col-12 col-lg-3 px-2 pt-lg-2 mb-2">
@@ -145,11 +145,7 @@ export default {
             this.item.price = parseFloat(this.item.price).toFixed(2);
             this.dataCopy = { ...this.item };
 
-            if (this.item.img) {
-                this.imgUrl = assetUrl + this.item.img;
-            } else {
-                this.imgUrl = assetUrl + '/placeholder.png';
-            }
+            this.clearImg();
         },
         formatPrice() {
             if (this.dataCopy.price) {
@@ -243,6 +239,15 @@ export default {
         refreshData() {
             this.$emit('refreshData', this.item.category);
             this.isEdit = false;
+        },
+        clearImg() {
+            if (this.item.img) {
+                this.imgUrl = assetUrl + this.item.img;
+                this.dataCopy.img = this.item.img;
+            } else {
+                this.imgUrl = assetUrl + '/placeholder.png';
+                delete this.dataCopy.img;
+            }
         }
     },
     watch: {

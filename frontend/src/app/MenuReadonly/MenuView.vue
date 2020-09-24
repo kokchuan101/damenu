@@ -1,4 +1,10 @@
 <template>
+<div>
+    <v-app-bar
+            app
+            dense
+            class="d-flex justify-content-center">
+            <p class="h3 font-weight-bold mt-2">{{ menu.restaurantName }}</p></v-app-bar>
     <div class="row">
         <div class="col-12">
             <MenuCategory :categories="menu.categories" @changeList="changeList"></MenuCategory>
@@ -7,6 +13,7 @@
             <ItemList :data="itemList"/>
         </div>
     </div>
+</div>
 </template>
 
 <script>
