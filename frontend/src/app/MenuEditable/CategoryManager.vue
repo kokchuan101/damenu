@@ -47,8 +47,10 @@
 <script>
 import { path } from '@/constant.js';
 import axios from 'axios';
+import AxiosHandlerMixin from '@/app/mixins/axiosHandler.mixin.js';
 
 export default {
+    mixins: [AxiosHandlerMixin],
     props: {
         categories: {
             type: Array,
@@ -99,7 +101,7 @@ export default {
                         this.$alertify.success('Successfully deleted');
                     })
                     .catch((error) => {
-                        this.$alertify.error(error.response.data.message);
+                        this.axiosErrorHandler(error);
                     });
             });
         },
@@ -125,7 +127,7 @@ export default {
                         this.$alertify.success('Succesfully Added');
                     })
                     .catch((error) => {
-                        this.$alertify.error(error.response.data.message);
+                        this.axiosErrorHandler(error);
                     });
             }
         }

@@ -50,9 +50,10 @@
 import ValidationMixin from '@/app/mixins/validation.mixin.js';
 import { path } from '@/constant.js';
 import axios from 'axios';
+import AxiosHandlerMixin from '@/app/mixins/axiosHandler.mixin.js';
 
 export default {
-    mixins: [ValidationMixin],
+    mixins: [ValidationMixin, AxiosHandlerMixin],
     props: {
         isCreate: {
             type: Boolean,
@@ -96,7 +97,7 @@ export default {
                         this.$emit('refreshData');
                     })
                     .catch((error) => {
-                        this.$alertify.error(error);
+                        this.axiosErrorHandler(error);
                     });
             });
         },
@@ -120,9 +121,7 @@ export default {
                                 this.isEdit = false;
                             })
                             .catch((error) => {
-                                this.$alertify.error(
-                                    error.response.data.message[0]
-                                );
+                                this.axiosErrorHandler(error);
                             });
                     }
                 } else {
@@ -134,9 +133,7 @@ export default {
                             this.$emit('refreshData', true);
                         })
                         .catch((error) => {
-                            this.$alertify.error(
-                                error.response.data.message[0]
-                            );
+                            this.axiosErrorHandler(error);
                         });
                 }
             } else {

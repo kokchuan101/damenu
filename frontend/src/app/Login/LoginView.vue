@@ -48,9 +48,10 @@
 import { path } from '@/constant.js';
 import axios from 'axios';
 import ValidationMixin from '@/app/mixins/validation.mixin.js';
+import AxiosHandlerMixin from '@/app/mixins/axiosHandler.mixin.js';
 
 export default {
-    mixins: [ValidationMixin],
+    mixins: [ValidationMixin, AxiosHandlerMixin],
     data() {
         return {
             rules: {
@@ -75,7 +76,9 @@ export default {
                             this.changeResetState(false);
                             this.$alertify.success('Successfully reset password');
                         })
-                        .catch((error) => { this.handleError(error); });
+                        .catch((error) => {
+                            this.axiosErrorHandler(error);
+                        });
                 } else {
                     axios
                         .post(path.accounts.login, this.account)
@@ -85,23 +88,12 @@ export default {
                             this.$alertify.success('Logged in');
                             this.$router.push({ name: 'MenuListView' });
                         })
-                        .catch((error) => { this.handleError(error); });
+                        .catch((error) => {
+                            this.axiosErrorHandler(error, 'Invalid email or password');
+                        });
                 }
             } else {
                 this.$alertify.error('Validation error, please rectify fields');
-            }
-        },
-        handleError(error) {
-            switch (error.response.status) {
-            case 400:
-                this.$alertify.error(error.response.data.message[0]);
-                break;
-            case 401:
-                this.$refs.form.reset();
-                this.$alertify.error('Invalid Email or Password');
-                break;
-            default:
-                this.$alertify.error(error.response.data.message);
             }
         },
         changeResetState(bool) {
