@@ -92,9 +92,10 @@
 import { assetUrl, path } from '@/constant.js';
 import axios from 'axios';
 import ValidationMixin from '@/app/mixins/validation.mixin.js';
+import AxiosHandlerMixin from '@/app/mixins/axiosHandler.mixin.js';
 
 export default {
-    mixins: [ValidationMixin],
+    mixins: [ValidationMixin, AxiosHandlerMixin],
     props: {
         item: {
             type: Object,
@@ -160,9 +161,7 @@ export default {
                             this.$emit('refreshData', this.item.category, true);
                         })
                         .catch((error) => {
-                            this.$alertify.error(
-                                error.response.data.message[0]
-                            );
+                            this.axiosErrorHandlre(error);
                         });
                 } else {
                     form.append('id', this.dataCopy._id);
@@ -182,9 +181,7 @@ export default {
                                 this.refreshData();
                             })
                             .catch((error) => {
-                                this.$alertify.error(
-                                    error.response.data.message[0]
-                                );
+                                this.axiosErrorHandlre(error);
                             });
                     }
                 }
@@ -215,7 +212,7 @@ export default {
                         this.refreshData();
                     })
                     .catch((error) => {
-                        this.$alertify.error(error);
+                        this.axiosErrorHandlre(error);
                     });
             });
         },

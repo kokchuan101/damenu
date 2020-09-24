@@ -14,8 +14,10 @@ import ItemList from './ItemList.vue';
 import MenuCategory from '@/app/components/menu/MenuCategory.vue';
 import axios from 'axios';
 import { path } from '@/constant.js';
+import AxiosHandlerMixin from '@/app/mixins/axiosHandler.mixin.js';
 
 export default {
+    mixins: [AxiosHandlerMixin],
     components: {
         ItemList,
         MenuCategory
@@ -34,6 +36,9 @@ export default {
                 this.itemList = this.menu.sortedItems.DRINKS;
                 this.category = this.menu.categories[0];
                 this.itemList = this.menu.sortedItems[this.category];
+            })
+            .catch((error) => {
+                this.axiosErrorHandler(error);
             });
     },
     methods: {

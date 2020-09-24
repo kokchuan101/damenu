@@ -27,8 +27,10 @@
 import MenuDetail from './MenuDetail.vue';
 import axios from 'axios';
 import { path } from '@/constant.js';
+import AxiosHandlerMixin from '@/app/mixins/axiosHandler.mixin.js';
 
 export default {
+    mixins: [AxiosHandlerMixin],
     components: { MenuDetail },
     created() {
         this.loadData();
@@ -53,7 +55,7 @@ export default {
                     this.menus = response.data;
                 })
                 .catch((error) => {
-                    this.$alertify.error(error.response.data.message);
+                    this.axiosErrorHandler(error);
                 });
 
             if (isCreate) {

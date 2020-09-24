@@ -77,8 +77,10 @@ import MenuCategory from '@/app/components/menu/MenuCategory.vue';
 import axios from 'axios';
 import { path } from '@/constant.js';
 import QRCode from 'qrcode';
+import AxiosHandlerMixin from '@/app/mixins/axiosHandler.mixin.js';
 
 export default {
+    mixins: [AxiosHandlerMixin],
     components: {
         ItemList,
         ItemDetail,
@@ -123,6 +125,9 @@ export default {
                         this.overlay.category = false;
                         this.$refs.MenuCategory.click();
                     }
+                })
+                .catch((error) => {
+                    this.axiosErrorHandlre(error);
                 });
         },
         changeList(category = null) {

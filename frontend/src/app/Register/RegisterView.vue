@@ -39,9 +39,10 @@
 import { path } from '@/constant.js';
 import axios from 'axios';
 import ValidationMixin from '@/app/mixins/validation.mixin.js';
+import AxiosHandlerMixin from '@/app/mixins/axiosHandler.mixin.js';
 
 export default {
-    mixins: [ValidationMixin],
+    mixins: [ValidationMixin, AxiosHandlerMixin],
     data() {
         return {
             account: {
@@ -67,17 +68,7 @@ export default {
                         this.$router.push({ name: 'LoginView' });
                     })
                     .catch((error) => {
-                        switch (error.response.status) {
-                        case 400:
-                            this.$alertify.error(
-                                error.response.data.message[0]
-                            );
-                            break;
-                        default:
-                            this.$alertify.error(
-                                error.response.data.message
-                            );
-                        }
+                        this.axiosErrorHandler(error);
                     });
             } else {
                 this.$alertify.error('Validation error, please rectify fields');
