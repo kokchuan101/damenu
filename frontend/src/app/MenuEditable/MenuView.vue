@@ -39,8 +39,9 @@
                 block
                 color="success"
                 @click="createItem"
-                :disabled="isCreate"
+                :disabled="isCreate||!category"
             >Add</v-btn>
+            <center v-if="!category"><p class="font-weight-bold">Add at least one category in "Manage Category"</p></center>
             <ItemDetail
                 v-if="newItem"
                 :item="newItem"
@@ -97,7 +98,7 @@ export default {
         return {
             menu: { _id: '' },
             itemList: [],
-            category: '',
+            category: null,
             newItem: null,
             isCreate: false,
             qrcode: '',
@@ -133,7 +134,7 @@ export default {
                     }
                 })
                 .catch((error) => {
-                    this.axiosErrorHandlre(error);
+                    this.axiosErrorHandler(error);
                 });
         },
         changeList(category = null) {
@@ -142,7 +143,10 @@ export default {
             } else {
                 this.category = this.menu.categories[0];
             }
-            this.itemList = this.menu.sortedItems[this.category];
+
+            if (this.category) {
+                this.itemList = this.menu.sortedItems[this.category];
+            }
         },
         createItem() {
             if (!this.isCreate) {
