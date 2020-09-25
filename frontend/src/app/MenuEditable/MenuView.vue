@@ -122,7 +122,6 @@ export default {
                 .get(path.menus.index + `/${this.$route.params.id}`)
                 .then((response) => {
                     this.menu = response.data;
-                    this.changeList(category);
 
                     if (isCreate) {
                         this.cancelCreate();
@@ -132,6 +131,8 @@ export default {
                         this.overlay.category = false;
                         this.$refs.MenuCategory.click();
                     }
+
+                    this.changeList(category);
                 })
                 .catch((error) => {
                     this.axiosErrorHandler(error);
