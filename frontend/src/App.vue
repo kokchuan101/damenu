@@ -13,8 +13,10 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn text><v-icon>mdi-account</v-icon>{{user}}</v-btn>
-            <v-btn @click=logout dark>Logout</v-btn>
+            <div v-if="$vuetify.breakpoint.lgAndUp">
+                <v-btn text><v-icon>mdi-account</v-icon>{{user}}</v-btn>
+                <v-btn @click=logout dark>Logout</v-btn>
+            </div>
         </v-app-bar>
 
         <v-navigation-drawer

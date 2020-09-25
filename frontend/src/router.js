@@ -27,7 +27,7 @@ const routes = [
     {
         path: '/menu',
         name: 'MenuListView',
-        component: () => import(/* webpackChunkName: "RegisterView" */ '@/app/MenuList/MenuListView.vue'),
+        component: () => import(/* webpackChunkName: "MenuListView" */ '@/app/MenuList/MenuListView.vue'),
         meta: { requiresAuth: true }
     },
     {
@@ -40,6 +40,12 @@ const routes = [
         path: '/view/menu/:id',
         name: 'MenuViewReadonly',
         component: () => import(/* webpackChunkName: "MenuReadonly" */ '@/app/MenuReadonly/MenuView.vue')
+    },
+    {
+        path: '/404',
+        alias: '*',
+        name: 'Error404',
+        component: () => import(/* webpackChunkName: "Error404" */ '@/app/components/Error404.vue')
     }
 ];
 
