@@ -2,7 +2,7 @@
     <div class="mt-5">
         <div class="row no-gutters justify-content-center" :class="{'mb-3': !isCreate}">
             <div class="col-10 col-lg-8">
-                <v-btn color="success" block @click="isCreate = true">Add</v-btn>
+                <v-btn color="success" block @click="isCreate = true">Create Menu</v-btn>
             </div>
         </div>
         <MenuDetail
