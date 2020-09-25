@@ -102,7 +102,7 @@ export default {
             }
         },
         deleteCategory(category) {
-            this.$alertify.confirm('Deleting item', () => {
+            this.$alertify.confirm('Deleting this category will remove all associated items. Are you sure on deleting?', () => {
                 axios
                     .delete(path.menus.categories, {
                         params: { id: this.menuId, category: category }

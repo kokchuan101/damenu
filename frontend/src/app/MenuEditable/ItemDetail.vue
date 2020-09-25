@@ -220,7 +220,7 @@ export default {
             }
         },
         onDelete() {
-            this.$alertify.confirm('Deleting item', () => {
+            this.$alertify.confirm('Are you sure on deleting this item?', () => {
                 this.loading = true;
                 axios
                     .delete(path.items.index + `/${this.dataCopy._id}`)
