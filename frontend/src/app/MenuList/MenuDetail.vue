@@ -103,7 +103,7 @@ export default {
             }
         },
         onDelete() {
-            this.$alertify.confirm('Deleting item', () => {
+            this.$alertify.confirm('Deleting this menu will remove all associated data. Are you sure on deleting?', () => {
                 this.loading = true;
                 axios
                     .delete(path.menus.index + `/${this.dataCopy._id}`)
