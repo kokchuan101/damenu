@@ -40,7 +40,7 @@
                 color="success"
                 @click="createItem"
                 :disabled="isCreate||!category"
-            >Add</v-btn>
+            >Create Item</v-btn>
             <center v-if="!category"><p class="font-weight-bold">Add at least one category in "Manage Category"</p></center>
             <ItemDetail
                 v-if="newItem"
