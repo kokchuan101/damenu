@@ -6,15 +6,16 @@ import { FileInterceptor } from '@nestjs/platform-express/multer/interceptors/fi
 import { UseInterceptors } from '@nestjs/common/decorators/core/use-interceptors.decorator';
 import { UpdateItemDto } from './dto/updateItem.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwtAuth.guard';
+import { imageFilter } from 'src/utils/utils.service';
 
 @UseGuards(JwtAuthGuard)
 @Controller('items')
 export class ItemsController
 {
-    constructor(private itemsService: ItemsService) { }
+    constructor(private itemsService: ItemsService) {}
 
     @Post()
-    @UseInterceptors(FileInterceptor('img'))
+    @UseInterceptors(FileInterceptor('img', { fileFilter: imageFilter }))
     async create(@UploadedFile() file: Express.Multer.File, @Body() item: CreateItemDto): Promise<void>
     {
         await this.itemsService.create(item, file);
@@ -33,7 +34,7 @@ export class ItemsController
     }
 
     @Patch()
-    @UseInterceptors(FileInterceptor('img'))
+    @UseInterceptors(FileInterceptor('img', { fileFilter: imageFilter }))
     async update(@UploadedFile() file: Express.Multer.File, @Body() item: UpdateItemDto): Promise<void>
     {
         await this.itemsService.update(item, file);

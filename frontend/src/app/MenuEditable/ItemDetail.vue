@@ -5,7 +5,11 @@
                 <input type="hidden" name="menuId" :value="dataCopy.menuId" />
                 <div>
                     <img class="item-img" :src="imgUrl" />
-                    <v-file-input v-if="isEdit||isCreate" name="img" @change="previewImg" @click:clear="clearImg"></v-file-input>
+                    <v-file-input
+                        v-if="isEdit||isCreate"
+                        name="img" @change="previewImg"
+                        :rules="rules.file"
+                        @click:clear="clearImg"></v-file-input>
                 </div>
             </div>
             <div class="col-12 col-lg-3 px-2 pt-lg-2 mb-2">
@@ -131,7 +135,8 @@ export default {
                 code: [this.required('Code'), this.max(4, 'Code')],
                 name: [this.required('Name')],
                 category: [this.required('Category')],
-                price: [this.required('Price'), this.numeric('Price')]
+                price: [this.required('Price'), this.numeric('Price')],
+                file: [this.image()]
             },
             loading: false
         };
