@@ -49,8 +49,10 @@ export class ItemsService
     {
         const item: Item = await this.itemModel.findByIdAndDelete(id).exec();
 
-        const filename: string = path.join(process.cwd(), 'public') + item.img;
-        fs.promises.unlink(filename);
+        if (item.img) {
+            const filename: string = path.join(process.cwd(), 'public') + item.img;
+            fs.promises.unlink(filename);
+        }
 
         return this.menuModel.updateOne(
             { id: item.menuId },

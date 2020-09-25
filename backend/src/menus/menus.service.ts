@@ -10,7 +10,6 @@ import * as path from 'path';
 import { CreateMenuDto } from './dto/createMenu.dto';
 import { UpdateMenuDto } from './dto/updateMenu.dto';
 import { Account } from 'src/accounts/schema/account.schema';
-import { promises } from 'dns';
 
 @Injectable()
 export class MenusService
