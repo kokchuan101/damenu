@@ -1,9 +1,9 @@
 <template>
-    <div class="row justify-content-center manage-category-wrapper">
-        <div class="col-11 col-lg-4 bg-white shadow-lg">
+    <v-row justify="center" class="manage-category-wrapper">
+        <v-col cols="11" lg="4" class="bg-white shadow-lg">
             <h3>Manage Category</h3>
-            <div class="row no-gutters mb-5">
-                <div class="col-12 col-lg-8">
+            <v-row no-gutters class="no-gutters mb-5">
+                <v-col cols="12" lg="8">
                     <v-text-field
                         class="mr-lg-4"
                         v-model="newCategory"
@@ -12,15 +12,15 @@
                         clearable
                         :rules="rules"
                         ></v-text-field>
-                </div>
-                <div class="col-12 col-lg-4">
+                </v-col>
+                <v-col cols="12" lg="4">
                     <v-btn
                         width="100%"
                         color="success"
                         :disabled="!valid||loading"
                         @click="add">Add</v-btn>
-                </div>
-            </div>
+                </v-col>
+            </v-row>
 
             <div v-for="(category,index) in dataCopy" :key="index" class="shadow-lg mb-3 d-flex">
                 <div class="flex-fill">
@@ -50,8 +50,8 @@
                 @click="closeOverlay"
                 width="50%"
                 :disabled="loading">Cancel</v-btn>
-        </div>
-    </div>
+        </v-col>
+    </v-row>
 </template>
 
 <script>

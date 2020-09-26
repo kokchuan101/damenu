@@ -1,10 +1,10 @@
 <template>
     <div class="mt-5">
-        <div class="row no-gutters justify-content-center" :class="{'mb-3': !isCreate}">
-            <div class="col-10 col-lg-8">
+        <v-row justify="center" no-gutters :class="{'mb-3': !isCreate}">
+            <v-col cols="10" lg="8">
                 <v-btn color="success" block @click="isCreate = true">Create Menu</v-btn>
-            </div>
-        </div>
+            </v-col>
+        </v-row>
         <MenuDetail
             v-if="isCreate"
             class="menu-detail"

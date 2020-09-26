@@ -1,6 +1,6 @@
 <template>
-    <div class="row justify-content-center h-100 no-gutters">
-        <div class="col-10 col-lg-8 row justify-content-center no-gutters shadow bg-white">
+    <v-row justify="center" no-gutters class="h-100">
+        <v-col cols="10" lg="8" justify="center" class="row no-gutters shadow bg-white">
             <v-form class="col py-3 px-lg-10 px-3" v-model="valid" ref="form" @submit.prevent="handleSubmit">
                 <div v-if="isEdit||isCreate">
                         <v-text-field
@@ -45,18 +45,18 @@
             <v-hover
                 v-slot:default="{ hover }"
             >
-                <div v-if="!isCreate" :class="hover? 'col-lg-4': ''" class="col-2 col-lg-2">
+                <v-col v-if="!isCreate" col="2" :class="hover?'col-lg-4':'col-lg-2'" >
                     <v-btn
                         @click="$router.push({ name: 'MenuViewEditable', params: { id: dataCopy._id}})"
                         :color=" hover ? 'deep-purple darken-2' : 'deep-purple lighten-2'"
                         class="w-100 h-100">
                         <v-icon x-large>mdi-chevron-right</v-icon>
                     </v-btn>
-                </div>
+                </v-col>
             </v-hover>
 
-        </div>
-    </div>
+        </v-col>
+    </v-row>
 </template>
 
 <script>
@@ -170,7 +170,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .menu-detail-wrapper {
     max-height: 10vh;
 }

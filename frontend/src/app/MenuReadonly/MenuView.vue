@@ -5,14 +5,14 @@
             dense
             class="d-flex justify-content-center">
             <p class="h3 font-weight-bold mt-2">{{ menu.restaurantName }}</p></v-app-bar>
-    <div class="row">
-        <div class="col-12">
+    <v-row>
+        <v-col cols="12">
             <MenuCategory :categories="menu.categories" @changeList="changeList"></MenuCategory>
-        </div>
-        <div class="col-12">
+        </v-col>
+        <v-col cols="12">
             <ItemList :data="itemList"/>
-        </div>
-    </div>
+        </v-col>
+    </v-row>
 </div>
 </template>
 
@@ -55,6 +55,3 @@ export default {
     }
 };
 </script>
-
-<style scoped>
-</style>

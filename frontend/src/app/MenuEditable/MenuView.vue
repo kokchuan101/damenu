@@ -1,6 +1,6 @@
 <template>
-    <div class="row px-lg-4">
-        <div class="col-12">
+    <v-row class="px-lg-4">
+        <v-col cols="12">
             <v-btn
             fab
             small
@@ -15,9 +15,9 @@
                 @click="generateQr">
                 Generate QR Code
             </v-btn>
-        </div>
+        </v-col>
 
-        <div class="col-12">
+        <v-col cols="12">
             <v-btn
                 color="deep-purple darken-2 white--text"
                 class="d-block"
@@ -32,9 +32,9 @@
                     @changeList="changeList">
                 </MenuCategory>
             </div>
-        </div>
+        </v-col>
 
-        <div class="col-12">
+        <v-col cols="12">
             <v-btn
                 block
                 color="success"
@@ -50,10 +50,10 @@
                 @refreshData="refreshData"
                 @cancelCreate="cancelCreate"
             />
-        </div>
-        <div class="col-12">
+        </v-col>
+        <v-col cols="12">
             <ItemList :items="itemList" :categories="menu.categories" @refreshData="refreshData" />
-        </div>
+        </v-col>
         <v-overlay :value="overlay.category" :dark="false">
             <CategoryManager
                 :categories="menu.categories"
@@ -73,7 +73,7 @@
                 </v-col>
             </v-row>
         </v-overlay>
-    </div>
+    </v-row>
 </template>
 
 <script>

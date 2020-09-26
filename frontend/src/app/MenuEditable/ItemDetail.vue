@@ -1,104 +1,107 @@
 <template>
     <div class="item-card shadow mb-2">
-        <v-form v-model="valid" ref="form" @submit.prevent="handleSubmit" class="row no-gutters pr-2">
-            <div class="col-12 col-lg-2 d-flex justify-content-center my-2">
-                <input type="hidden" name="menuId" :value="dataCopy.menuId" />
-                <div>
-                    <img class="item-img" :src="imgUrl" />
-                    <v-file-input
-                        v-if="isEdit||isCreate"
-                        name="img" @change="previewImg"
-                        :rules="rules.file"
-                        @click:clear="clearImg"></v-file-input>
-                </div>
-            </div>
-            <div class="col-12 col-lg-3 px-2 pt-lg-2 mb-2">
-                <v-text-field
-                    name="code"
-                    class="item-code mb-2"
-                    v-model.trim="dataCopy.code"
-                    label="Code"
-                    counter="4"
-                    :rules="isEdit||isCreate ?rules.code: []"
-                    :hide-details="!(isEdit||isCreate)"
-                    :filled="!(isEdit||isCreate)"
-                    :readonly="!(isEdit||isCreate)"
-                    :clearable="isEdit||isCreate"
-                ></v-text-field>
-                <v-text-field
-                    name="name"
-                    class="item-name"
-                    v-model.trim="dataCopy.name"
-                    label="Name"
-                    :rules="isEdit||isCreate ?rules.name: []"
-                    :hide-details="!(isEdit||isCreate)"
-                    :filled="!(isEdit||isCreate)"
-                    :readonly="!(isEdit||isCreate)"
-                    :clearable="isEdit||isCreate"
-                ></v-text-field>
-            </div>
-            <div class="col-12 col-lg-2 px-2 pt-lg-2 mb-2">
-                <v-autocomplete
-                    class="mb-2"
-                    v-model.trim="dataCopy.category"
-                    :items="categories"
-                    label="Category"
-                    :rules="isEdit||isCreate ?rules.category: []"
-                    :hide-details="!(isEdit||isCreate)"
-                    :filled="!(isEdit||isCreate)"
-                    :readonly="!(isEdit||isCreate)"
-                    :clearable="isEdit||isCreate"
-                ></v-autocomplete>
-                <v-text-field
-                    name="price"
-                    class="mb-2"
-                    v-model="dataCopy.price"
-                    @blur="formatPrice"
-                    label="Price"
-                    :rules="isEdit||isCreate ?rules.price: []"
-                    :hide-details="!(isEdit||isCreate)"
-                    :filled="!(isEdit||isCreate)"
-                    :readonly="!(isEdit||isCreate)"
-                    :clearable="isEdit||isCreate"
-                    prefix="RM"
-                    type="number"
-                    step=".01"
-                ></v-text-field>
-            </div>
-            <div class="col-12 col-lg-5 px-2 pt-lg-2 mb-2">
-                <v-textarea
-                    name="description"
-                    label="Description"
-                    v-model.trim="dataCopy.description"
-                    :rules="isEdit||isCreate ?rules.description: []"
-                    :hide-details="!(isEdit||isCreate)"
-                    :filled="!(isEdit||isCreate)"
-                    :readonly="!(isEdit||isCreate)"
-                    :clearable="isEdit||isCreate"
-                ></v-textarea>
-            </div>
-            <div v-if="isEdit||isCreate" class="col-12 d-flex justify-content-end px-2 mb-2 control-buttons">
-                    <v-btn color="success"
-                        class="mr-lg-2"
-                        type="submit"
-                        key="submit"
-                        :loading="loading">Save</v-btn>
+        <v-form v-model="valid" ref="form" @submit.prevent="handleSubmit">
+            <v-row no-gutters class="pr-2">
+                <v-col cols="12" lg="2" class="d-flex justify-content-center my-2 pl-2">
+                    <input type="hidden" name="menuId" :value="dataCopy.menuId" />
+                    <div>
+                        <img class="item-img" :src="imgUrl" />
+                        <v-file-input
+                            v-if="isEdit||isCreate"
+                            name="img" @change="previewImg"
+                            :rules="rules.file"
+                            @click:clear="clearImg"></v-file-input>
+                    </div>
+                </v-col>
+                <v-col cols="12" lg="3" class="px-2 pt-lg-2 mb-2">
+                    <v-text-field
+                        name="code"
+                        class="item-code mb-2"
+                        v-model.trim="dataCopy.code"
+                        label="Code"
+                        counter="4"
+                        :rules="isEdit||isCreate ?rules.code: []"
+                        :hide-details="!(isEdit||isCreate)"
+                        :filled="!(isEdit||isCreate)"
+                        :readonly="!(isEdit||isCreate)"
+                        :clearable="isEdit||isCreate"
+                    ></v-text-field>
+                    <v-text-field
+                        name="name"
+                        class="item-name"
+                        v-model.trim="dataCopy.name"
+                        label="Name"
+                        :rules="isEdit||isCreate ?rules.name: []"
+                        :hide-details="!(isEdit||isCreate)"
+                        :filled="!(isEdit||isCreate)"
+                        :readonly="!(isEdit||isCreate)"
+                        :clearable="isEdit||isCreate"
+                    ></v-text-field>
+                </v-col>
+                <v-col cols="12" lg="2" class="px-2 pt-lg-2 mb-2">
+                    <v-autocomplete
+                        class="mb-2"
+                        v-model.trim="dataCopy.category"
+                        :items="categories"
+                        label="Category"
+                        :rules="isEdit||isCreate ?rules.category: []"
+                        :hide-details="!(isEdit||isCreate)"
+                        :filled="!(isEdit||isCreate)"
+                        :readonly="!(isEdit||isCreate)"
+                        :clearable="isEdit||isCreate"
+                    ></v-autocomplete>
+                    <v-text-field
+                        name="price"
+                        class="mb-2"
+                        v-model="dataCopy.price"
+                        @blur="formatPrice"
+                        label="Price"
+                        :rules="isEdit||isCreate ?rules.price: []"
+                        :hide-details="!(isEdit||isCreate)"
+                        :filled="!(isEdit||isCreate)"
+                        :readonly="!(isEdit||isCreate)"
+                        :clearable="isEdit||isCreate"
+                        prefix="RM"
+                        type="number"
+                        step=".01"
+                    ></v-text-field>
+                </v-col>
+                <v-col cols="12" lg="5" class="px-2 pt-lg-2 mb-2">
+                    <v-textarea
+                        name="description"
+                        label="Description"
+                        v-model.trim="dataCopy.description"
+                        :rules="isEdit||isCreate ?rules.description: []"
+                        :hide-details="!(isEdit||isCreate)"
+                        :filled="!(isEdit||isCreate)"
+                        :readonly="!(isEdit||isCreate)"
+                        :clearable="isEdit||isCreate"
+                    ></v-textarea>
+                </v-col>
+                <v-col cols="12" v-if="isEdit||isCreate" class="d-flex justify-content-end px-2 mb-2 control-buttons">
+                        <v-btn color="success"
+                            class="mr-lg-2"
+                            type="submit"
+                            key="submit"
+                            :loading="loading">Save</v-btn>
+                        <v-btn
+                            @click="onCancel"
+                            key="cancel"
+                            :disabled="loading">Cancel</v-btn>
+                </v-col>
+                <v-col cols="12" v-else class="col-12 d-flex justify-content-end px-2 mb-2 control-buttons">
                     <v-btn
-                        @click="onCancel"
-                        key="cancel"
-                        :disabled="loading">Cancel</v-btn>
-            </div>
-            <div v-else class="col-12 d-flex justify-content-end px-2 mb-2 control-buttons">
-                <v-btn
-                    color="info"
-                    class="mr-lg-2"
-                    @click="isEdit=true"
-                    :disabled="loading">Edit</v-btn>
-                <v-btn
-                    color="error"
-                    @click="onDelete"
-                    :loading="loading">Delete</v-btn>
-            </div>
+                        color="info"
+                        class="mr-lg-2"
+                        @click="isEdit=true"
+                        :disabled="loading">Edit</v-btn>
+                    <v-btn
+                        color="error"
+                        @click="onDelete"
+                        :loading="loading">Delete</v-btn>
+                </v-col>
+
+            </v-row>
         </v-form>
     </div>
 </template>

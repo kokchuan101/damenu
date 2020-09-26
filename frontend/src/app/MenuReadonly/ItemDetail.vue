@@ -1,15 +1,15 @@
 <template>
-    <div class="row item-card pl-2 shadow mb-2">
-        <div class="col-4 col-lg-2 d-flex align-items-start align-items-lg-center"><img
+    <v-row class="item-card pl-2 shadow mb-2">
+        <v-col cols="4" lg="2" class="d-flex align-items-start align-items-lg-center"><img
                 class='item-img'
                 :src="imgUrl"
-            ></div>
-        <div class="col-8 col-lg-10 row no-gutters align-items-start align-items-lg-center item-text">
-            <div class="col-12 col-lg-3 item-title"><span class="mr-2">{{data.code}}</span>{{data.name}}</div>
-            <div class="col-12 col-lg-2">RM {{data.price.toFixed(2)}}</div>
-            <div class="col-12 col-lg-5 item-desc">{{data.description}}</div>
-        </div>
-    </div>
+            ></v-col>
+        <v-col cols="8" lg="10" class="row no-gutters align-items-start align-items-lg-center item-text">
+            <v-col cols="12" lg="3" class="item-title"><span class="mr-2">{{data.code}}</span>{{data.name}}</v-col>
+            <v-col cols="12" lg="2" >RM {{data.price.toFixed(2)}}</v-col>
+            <v-col cols="12" lg="5" class="item-desc">{{data.description}}</v-col>
+        </v-col>
+    </v-row>
 </template>
 
 <script>
