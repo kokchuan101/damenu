@@ -32,9 +32,15 @@ export default {
     methods: {
         changeList(category) {
             this.$emit('changeList', category);
-        },
-        click() {
-            this.$refs.toggle[0].$el.click();
+        }
+    },
+    watch: {
+        categories() {
+            this.$nextTick(() => {
+                if (this.categories.length > 0) {
+                    this.$refs.toggle[0].$el.click();
+                }
+            });
         }
     }
 };
