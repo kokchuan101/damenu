@@ -114,6 +114,9 @@ export default {
             .then((response) => {
                 this.menu = response.data;
                 this.changeList();
+            })
+            .catch((error) => {
+                this.axiosErrorHandler(error);
             });
     },
     methods: {
@@ -128,8 +131,11 @@ export default {
                     }
 
                     if (this.overlay.category) {
+                        if (!this.menu.categories[0]) {
+                            this.itemList = [];
+                            this.category = null;
+                        }
                         this.overlay.category = false;
-                        this.$refs.MenuCategory.click();
                     }
 
                     this.changeList(category);
