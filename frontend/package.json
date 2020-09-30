@@ -1,9 +1,10 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
+  "name": "damenu",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "serve:prod": "serve dist",
     "build": "vue-cli-service build",
     "lint": "lint-staged",
     "lint:fix": "vue-cli-service lint"
