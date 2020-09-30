@@ -7,7 +7,9 @@
   },
   "scripts": {
     "serve": "lerna run serve --stream",
-    "lint:fix": "lerna run lint:fix --stream"
+    "serve:prod": "lerna run serve:prod --parallel",
+    "lint:fix": "lerna run lint:fix --stream",
+    "build": "lerna run build"
   },
   "husky": {
     "hooks": {
