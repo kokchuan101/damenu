@@ -1,4 +1,4 @@
-const url = 'http://localhost:3000';
+const url = `${process.env.VUE_APP_API_HOST}`;
 const assetUrl = url + '/public';
 
 const path =
