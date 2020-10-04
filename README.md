@@ -14,3 +14,5 @@ cd damenu
 npm install
 bash development.sh
 lerna exec npm install
+npm run serve
+```
