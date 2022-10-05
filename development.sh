@@ -20,7 +20,7 @@ cp backend/.env.example backend/.env
 # Docker mode create them in root user
 # Monorepo mode create then in non-root user mode
 # TODO: Fix Docker to create with non-root user (hehe)
-sudo rm -rf backend/node_modules backend/node_modules/dist
+sudo rm -rf backend/node_modules backend/dist
 
 sed -i 's/{API_HOST}/http:\/\/localhost:3000/' frontend/.env.development
 
