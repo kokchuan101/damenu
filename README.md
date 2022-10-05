@@ -44,7 +44,7 @@ Note: Eventhough `lerna` is not utilized for initialization in `docker` mode, it
 bash development.sh monorepo
 
 # Install npm packages for both frontend & backend
-lerna exec npm install
+npx lerna exec npm install
 
 # Boot up both frontend & backend
 npm run serve
