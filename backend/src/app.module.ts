@@ -6,10 +6,14 @@ import { ItemsModule } from './items/items.module';
 import { MenusModule } from './menus/menus.module';
 import { AccountsModule } from './accounts/accounts.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
     imports: [
-        MongooseModule.forRoot('mongodb://localhost:27017/damenu', { 'useFindAndModify': false }),
+        ConfigModule.forRoot(),
+        MongooseModule.forRoot(process.env.MONGO_URL, {
+            useFindAndModify: false
+        }),
         ItemsModule,
         MenusModule,
         AccountsModule,
@@ -18,4 +22,4 @@ import { AuthModule } from './auth/auth.module';
     controllers: [AppController],
     providers: [AppService]
 })
-export class AppModule { }
+export class AppModule {}
