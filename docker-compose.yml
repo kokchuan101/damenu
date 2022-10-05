@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  damenu-backend:
+    container_name: damenu-backend
+    depends_on:
+      - damenu-mongo
+    build: .
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./backend:/code/app
+  damenu-mongo:
+    image: mongo
+    container_name: damenu-mongo
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - '27017:27017'
+
+volumes:
+  mongodata:
