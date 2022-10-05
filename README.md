@@ -33,7 +33,7 @@ npm install
 npm run serve
 ```
 
-Note: Eventhough `lerna` is not utilized for initialization in `docker` mode, it is used for `husky` hook to perform code sniffing both repository on `git commit` .
+Note: Eventhough `lerna` is not utilized for initialization in `docker` mode, it is used for `husky` hook to perform code sniffing for both repository on `git commit` .
 
 #### 2. Monorepo mode
 
